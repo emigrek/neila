@@ -37,6 +37,11 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
+        console.log(`User (${socket.id}) disconnected`);
+
+        var user = reception.getUser(socket.id);
+        if(!user) return;
+
         var { name, users } = reception.getRoom(socket.id);
 
         socket.broadcast.to(name).emit("connection end");
