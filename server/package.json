@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Emigrek#3363",
+  "author": "Emigrek",
   "license": "MIT",
   "private": true,
   "dependencies": {
