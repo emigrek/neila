@@ -8,7 +8,9 @@ class Reception {
     }
 
     match(user) {
-        if(!queue) 
+        console.log(this.queue);
+
+        if(this.queue.length < 1) 
             return this.queue.push(user);
 
         var peer = this.queue.pop();
@@ -22,8 +24,8 @@ class Reception {
 
         this.rooms.push(room);
 
-        peer.socket.emit("connection established", { name: room.name, user: user });
-        user.socket.emit("connection established", { name: room.name, user: peer });
+        peer.socket.emit("connection established", { name: room.name, user: user.data });
+        user.socket.emit("connection established", { name: room.name, user: peer.data });
     }
 
     createUser(socket, data) {
@@ -42,7 +44,19 @@ class Reception {
     }
 
     getRoom(socketId) {
-        return this.rooms.filter(room => room.users.includes(socketId))[0];
+        var found = false;
+
+        this.rooms.forEach(room => {
+            room.users.forEach(user => {
+                if(user.socket.id == socketId) found = room;
+            });
+        });
+
+        return found;
+    }
+
+    destroyRoom(name) {
+        this.rooms = this.rooms.filter(room => room.name !== name);
     }
 };
 module.exports = Reception;

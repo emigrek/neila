@@ -3,7 +3,9 @@
     <v-app-bar
       app
       color="black"
+      class="d-flex justify-center align-center"
     >
+      <div class="display-1 font-weight-bold">neila 👽</div>
     </v-app-bar>
     <v-main>
       <v-fade-transition>
@@ -15,3 +17,9 @@
 
 <script>
 </script>
+
+<style>
+:root {
+  color-scheme: dark;
+}
+</style>

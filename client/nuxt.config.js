@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - client',
-    title: 'client',
+    titleTemplate: '%s',
+    title: 'neila - nawiąż połączenie z obcymi',
     htmlAttrs: {
       lang: 'en'
     },
@@ -54,6 +54,7 @@ export default {
       dark: true,
       themes: {
         dark: {
+          alien: '#79DB75',
           primary: colors.blue.darken2,
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,

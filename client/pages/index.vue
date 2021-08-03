@@ -1,28 +1,26 @@
 <template>
   <v-container>
-    <v-row align="center" justify="center">
-      <v-col cols="8">
-        <v-card elevation="5">
-          <v-card-title>Czat</v-card-title>
-          <v-card-subtitle>Czat</v-card-subtitle>
-          <v-card-text>
-            A tutaj tekst
-          </v-card-text>
-          <v-card-actions>
-            <v-text-field></v-text-field>
-          </v-card-actions>
-        </v-card>
+    <v-row align="center" justify="center" class="mt-2">
+      <v-col xl="8" lg="8" md="10" sm="12">
+        <Chat/>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
-  name: "app",
+  head: {
+    title: `neila`,
+  },
   transition: "fade",
-  mounted() {
-    this.socket = this.$nuxtSocket({});
+  components: {
+    Chat: () => import("~/components/Chat")
+  },
+  computed: {
+    ...mapState(["storage"]),
   },
 }
 </script>
