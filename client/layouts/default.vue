@@ -5,7 +5,7 @@
       color="black"
       class="d-flex justify-center align-center"
     >
-      <div class="display-1 font-weight-bold">neila 👽</div>
+      <div class="display-1 font-weight-bold">nelia 👽</div>
     </v-app-bar>
     <v-main>
       <v-fade-transition>

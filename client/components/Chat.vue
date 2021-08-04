@@ -33,12 +33,33 @@
                     </v-list-item-content>
                 </v-list-item>
                 <template v-slot:default="{ item }">
+                    <!--
                     <v-list-item :key="item.id" dark>
                         <v-list-item-content>
-                            <v-list-item-title>{{(item.author) ? ((item.author == socket.id) ? "Ty" : "👽") : ''}}</v-list-item-title>
+                            <v-list-item-title v-if="item.author">{{(item.author == socket.id) ? "Ty" : "👽"}}</v-list-item-title>
                             <v-list-item-subtitle>{{item.content}}</v-list-item-subtitle>
                         </v-list-item-content>
                     </v-list-item>
+                    !-->
+                    <div :key="item.id" class="d-flex mb-2">
+                        <v-sheet v-if="!item.author" class="ma-auto text-center grey--text text--darken-2">{{item.content}}</v-sheet>
+                        <v-sheet v-else-if="item.author == socket.id" class="d-flex ml-auto pa-5 black--text" width="500" color="white" rounded="xl" elevaton="2">
+                            <div class="me-3">
+                                {{item.content}}
+                            </div>
+                        </v-sheet>
+                        <v-sheet v-else-if="item.author != socket.id" class="d-flex mr-auto pa-2 black--text" width="500" color="alien" rounded="xl" elevaton="2">
+                            <div class="justify-center align-center">
+                                <v-avatar class="me-3">
+                                    <img
+                                        src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/extraterrestrial-alien_1f47d.png"
+                                        alt="stranger"
+                                    >
+                                </v-avatar>
+                                {{item.content}}
+                            </div>
+                        </v-sheet>
+                    </div>
                 </template>
             </v-virtual-scroll>
         </v-sheet>
