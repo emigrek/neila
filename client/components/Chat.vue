@@ -109,10 +109,11 @@ export default {
             element.scrollTop = element.scrollHeight;
         },
         formatTime(created) {
-            return moment(created).format("HH:mm:ss")
+            return moment(created).fromNow()
         }
     },
     mounted() {
+        moment.locale('pl');
         this.socket = this.$nuxtSocket({});
 
         this.socket.on('connection established', (room) => {
