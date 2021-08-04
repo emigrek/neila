@@ -22,46 +22,25 @@
             </div>
         </v-sheet>
         <v-sheet class="box pa-3" rounded>
-            <v-virtual-scroll
-                height="500"
-                :items="storage.messages"
-                :item-height="64"
-            >
-                <v-list-item v-if="!socket">
-                    <v-list-item-content>
-                        <v-list-item-title>Łączenie z serwerem...</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <template v-slot:default="{ item }">
-                    <!--
-                    <v-list-item :key="item.id" dark>
-                        <v-list-item-content>
-                            <v-list-item-title v-if="item.author">{{(item.author == socket.id) ? "Ty" : "👽"}}</v-list-item-title>
-                            <v-list-item-subtitle>{{item.content}}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    !-->
-                    <div :key="item.id" class="d-flex mb-2">
-                        <v-sheet v-if="!item.author" class="ma-auto text-center grey--text text--darken-2">{{item.content}}</v-sheet>
-                        <v-sheet v-else-if="item.author == socket.id" class="d-flex ml-auto pa-5 black--text" width="500" color="white" rounded="xl" elevaton="2">
-                            <div class="me-3">
-                                {{item.content}}
-                            </div>
-                        </v-sheet>
-                        <v-sheet v-else-if="item.author != socket.id" class="d-flex mr-auto pa-2 black--text" width="500" color="alien" rounded="xl" elevaton="2">
-                            <div class="justify-center align-center">
-                                <v-avatar class="me-3">
-                                    <img
-                                        src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/microsoft/209/extraterrestrial-alien_1f47d.png"
-                                        alt="stranger"
-                                    >
-                                </v-avatar>
-                                {{item.content}}
-                            </div>
-                        </v-sheet>
+            <div id="messages" style="height: 500px;overflow-y: scroll;">
+                <div class="pa-2" v-for="item in storage.messages" :key="item.id">
+                    <div v-if="!item.author">
+                        <div class="subtitle-1 text-center grey--text">
+                            {{ item.content }}
+                        </div>
                     </div>
-                </template>
-            </v-virtual-scroll>
+                    <div v-else :class="{ 'd-flex flex-row-reverse': item.author == socket.id}">
+                        <v-tooltip :left="item.author == socket.id" :right="item.author != socket.id">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-chip v-bind="attrs" v-on="on" large :color="(item.author == socket.id) ? '' : 'alien'" :class="{ 'black--text': item.author != socket.id }">
+                                    {{ item.content }}
+                                </v-chip>
+                            </template>
+                            <span>{{ formatTime(item.created) }}</span>
+                        </v-tooltip>
+                    </div>
+                </div>
+            </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
             <v-text-field
@@ -72,6 +51,7 @@
                 @click:append-outer="send"
                 clearable
                 background-color="grey darken-3"
+                v-on:keyup.enter="send"
                 color="alien"
             ></v-text-field>
         </v-sheet>
@@ -124,6 +104,13 @@ export default {
             this.$store.commit('storage/SET_ROOM', null);
             this.$store.commit('storage/CLEAR_MESSAGES');
         },
+        scrollToEnd() {
+            const element = document.getElementById('messages');
+            element.scrollTop = element.scrollHeight;
+        },
+        formatTime(created) {
+            return moment(created).format("HH:mm:ss")
+        }
     },
     mounted() {
         this.socket = this.$nuxtSocket({});
@@ -134,7 +121,7 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
-                content: `Nawiązano łączność, przywitaj się! (#${room.name})`
+                content: `Nawiązano łączność, przywitaj się!`
             });
 
             this.$store.commit('storage/SET_ROOM', room);
@@ -154,6 +141,11 @@ export default {
         this.socket.on('message', (data) => {
             this.$store.commit('storage/ADD_MESSAGE', data);
         });
+    },
+    watch: {
+        'storage.messages.length': function() {
+            setTimeout(() => this.scrollToEnd(), 50);
+        }
     },
     computed: {
         message: {
