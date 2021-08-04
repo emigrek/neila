@@ -33,8 +33,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        console.log(`User (${socket.id}) disconnected`);
-
         if(!reception.getUser(socket.id)) return;
 
         var { name } = reception.getRoom(socket.id);

@@ -1,0 +1,17 @@
+{
+  "name": "nelia",
+  "version": "1.0.0",
+  "description": "talk with aliens 👽",
+  "scripts": {
+    "dev": "concurrently \"nodemon --exec yarn --cwd ./client/ dev\" \"nodemon --exec yarn --cwd ./server/ start\""
+  },
+  "repository": "https://github.com/emigrek/nelia",
+  "author": "Emigrek <kaioshinbox@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}

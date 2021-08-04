@@ -8,8 +8,6 @@ class Reception {
     }
 
     match(user) {
-        console.log(this.queue);
-
         if(this.queue.length < 1) 
             return this.queue.push(user);
 
