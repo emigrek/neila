@@ -1,5 +1,5 @@
 <template>
-    <v-sheet elevation="5" class="pa-6">
+    <v-sheet elevation="5" class="pa-6 rounded-lg">
         <v-sheet class="title pa-3 mb-2 d-flex" color="alien" elevation="1" rounded>
             <div class="title black--text">Czat 💬</div>
             <div class="ml-auto">
@@ -23,22 +23,13 @@
         </v-sheet>
         <v-sheet class="box pa-3" rounded>
             <div id="messages" style="height: 500px;overflow-y: scroll;">
-                <div class="pa-2" v-for="item in storage.messages" :key="item.id">
+                <div v-for="item in storage.messages" :key="item.id">
                     <div v-if="!item.author">
                         <div class="subtitle-1 text-center grey--text">
                             {{ item.content }}
                         </div>
                     </div>
-                    <div v-else :class="{ 'd-flex flex-row-reverse': item.author == socket.id}">
-                        <v-tooltip :left="item.author == socket.id" :right="item.author != socket.id">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-chip v-bind="attrs" v-on="on" large :color="(item.author == socket.id) ? '' : 'alien'" :class="{ 'black--text': item.author != socket.id }">
-                                    {{ item.content }}
-                                </v-chip>
-                            </template>
-                            <span>{{ formatTime(item.created) }}</span>
-                        </v-tooltip>
-                    </div>
+                    <Message v-else :content="item.content" :me="item.author == socket.id" :created="item.created"/>
                 </div>
             </div>
         </v-sheet>
@@ -53,6 +44,8 @@
                 background-color="grey darken-3"
                 v-on:keyup.enter="send"
                 color="alien"
+                no-details
+                hide-details
             ></v-text-field>
         </v-sheet>
     </v-sheet>
@@ -65,6 +58,9 @@ import moment from "moment";
 
 export default {
     name: "Chat",
+    components: {
+        Message: () => import("~/components/Message")
+    },
     data() {
         return {
             socket: null,
@@ -108,9 +104,6 @@ export default {
             const element = document.getElementById('messages');
             element.scrollTop = element.scrollHeight;
         },
-        formatTime(created) {
-            return moment(created).fromNow()
-        }
     },
     mounted() {
         moment.locale('pl');
@@ -162,3 +155,17 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.message {
+    line-height: 1.3333;
+    min-width: 0;
+    max-width: 36rem;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-line;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: .5rem;
+}
+</style>
