@@ -1,21 +1,14 @@
 <template>
     <div class="px-2 py-1">
-        <div :class="{ 'd-flex flex-row-reverse': me }">
+        <div :class="{ 'd-flex flex-row-reverse': me, 'd-flex flex-row': !me }">
             <v-tooltip
                 :left="me"
                 :right="!me"
             >
             <template v-slot:activator="{ on, attrs }">
-                <v-chip
-                    class="message"
-                    v-bind="attrs"
-                    v-on="on"
-                    large
-                    :color="me ? '' : 'alien'"
-                    :class="{ 'black--text': !me }"
-                >
-                    {{ content }}
-                </v-chip>
+                <v-sheet class="message rounded-xl px-3 py-3" v-bind="attrs" v-on="on" :color="me ? 'grey darken-3' : 'alien'" :class="{ 'black--text': !me }">
+                    {{content}}
+                </v-sheet>
             </template>
                 <span>{{ formatTime(created) }}</span>
             </v-tooltip>
@@ -36,3 +29,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.message {
+    max-width: 30rem;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+</style>

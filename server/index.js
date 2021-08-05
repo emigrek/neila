@@ -14,7 +14,7 @@ const Reception = require('./system/Reception');
 const reception = new Reception();
 
 io.on('connection', (socket) => {
-    socket.on('queueUp', (data) => {
+    socket.on('queue up', (data) => {
         var user = reception.createUser(socket, data);
         reception.match(user);
     });

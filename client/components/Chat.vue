@@ -1,5 +1,5 @@
 <template>
-    <v-sheet elevation="5" class="pa-6 rounded-lg">
+    <v-sheet elevation="10" class="pa-6 rounded-lg">
         <v-sheet class="title pa-3 mb-2 d-flex" color="alien" elevation="1" rounded>
             <div class="title black--text">Czat 💬</div>
             <div class="ml-auto">
@@ -21,10 +21,10 @@
                 </v-btn>
             </div>
         </v-sheet>
-        <v-sheet class="box pa-3" rounded>
+        <v-sheet class="box py-3" rounded>
             <div id="messages" style="height: 500px;overflow-y: scroll;">
                 <div v-for="item in storage.messages" :key="item.id">
-                    <div v-if="!item.author">
+                    <div class="mb-3" v-if="!item.author">
                         <div class="subtitle-1 text-center grey--text">
                             {{ item.content }}
                         </div>
@@ -37,7 +37,8 @@
             <v-text-field
                 v-model="message"
                 placeholder="Napisz coś..."
-                solo
+                filled
+                rounded
                 append-outer-icon="mdi-send"
                 @click:append-outer="send"
                 clearable
@@ -89,16 +90,21 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
-                content: "Nawiązywanie połączenia 🔭"
+                content: "Nawiązywanie połączenia... 🔭"
             });
 
-            this.socket.emit('queueUp', {});
+            this.socket.emit('queue up', {});
             this.$store.commit('storage/SET_SEARCHING', true);
         },
         async disconnect() {
             this.socket.emit("leave");
             this.$store.commit('storage/SET_ROOM', null);
-            this.$store.commit('storage/CLEAR_MESSAGES');
+
+            this.$store.commit('storage/ADD_MESSAGE', {
+                id: nanoid(),
+                created: moment().format(),
+                content: "Rozłączyłeś się. 🤫"
+            });
         },
         scrollToEnd() {
             const element = document.getElementById('messages');
@@ -115,7 +121,7 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
-                content: `Nawiązano łączność, przywitaj się!`
+                content: `Nawiązano łączność, przywitaj się! 👋`
             });
 
             this.$store.commit('storage/SET_ROOM', room);
@@ -126,7 +132,7 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
-                content: `Utracono połączenie`
+                content: `Utracono połączenie. 😥`
             });
 
             this.$store.commit('storage/SET_ROOM', null);

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row align="center" justify="center" class="mt-2">
-      <v-col xl="8" lg="8" md="10" sm="12">
+      <v-col xl="6" lg="8" md="10" sm="12">
         <Chat/>
       </v-col>
     </v-row>
