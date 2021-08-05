@@ -51,6 +51,7 @@
                     </div>
                     <Message v-else :content="item.content" :me="item.author == socket.id" :created="item.created"/>
                 </div>
+                <Typing v-if="typing"/>
             </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
@@ -61,10 +62,10 @@
                 rounded
                 append-outer-icon="mdi-send"
                 @click:append-outer="send"
-                clearable
                 background-color="grey darken-3"
                 v-on:keyup.enter="send"
                 color="alien"
+                @keyup="type"
                 no-details
                 hide-details
             ></v-text-field>
@@ -80,12 +81,14 @@ import moment from "moment";
 export default {
     name: "Chat",
     components: {
-        Message: () => import("~/components/Message")
+        Message: () => import("~/components/Message"),
+        Typing: () => import("~/components/Typing")
     },
     data() {
         return {
             socket: null,
-            input: ''
+            input: '',
+            typing: false
         };
     },
     methods: {
@@ -142,6 +145,10 @@ export default {
                 content: "Rozłączyłeś się. 🤫"
             });
         },
+        async type() {
+            if(this.storage.room)
+                this.socket.emit('typing', this.input.length > 0);
+        },
         scrollToEnd() {
             const element = document.getElementById('messages');
             element.scrollTop = element.scrollHeight;
@@ -177,6 +184,10 @@ export default {
 
         this.socket.on('message', (data) => {
             this.$store.commit('storage/ADD_MESSAGE', data);
+        });
+
+        this.socket.on('typing', (state) => {
+            this.typing = state;
         });
     },
     watch: {

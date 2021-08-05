@@ -28,6 +28,11 @@ io.on('connection', (socket) => {
         socket.broadcast.to(name).emit('message', data);
     });
 
+    socket.on('typing', (state) => {
+        var { name } = reception.getRoom(socket.id);
+        socket.broadcast.to(name).emit('typing', state);
+    });
+
     socket.on('leave', () => {
         var { name } = reception.getRoom(socket.id);
 
