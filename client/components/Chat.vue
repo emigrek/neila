@@ -125,6 +125,14 @@ export default {
             this.$store.commit('storage/SET_SEARCHING', false);
         },
         async disconnect() {
+            const res = await this.$dialog.confirm({
+                text: 'Na pewno chcesz się rozłączyć?',
+                title: 'Stój! 😧',
+                actions: ['Nie, zostaję', 'Tak']
+            })
+
+            if(!res) return;
+
             this.socket.emit("leave");
             this.$store.commit('storage/SET_ROOM', null);
 
