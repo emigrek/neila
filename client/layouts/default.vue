@@ -4,6 +4,7 @@
       app
       color="black"
       class="d-flex justify-center align-center"
+      :value="!storage.overlay"
     >
       <div class="display-1 font-weight-bold">nelia 👽</div>
     </v-app-bar>
@@ -16,10 +17,19 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
+export default {
+    name: 'default',
+    computed: {
+        ...mapState(["storage"]),
+    },
+}
 </script>
 
 <style>
 :root {
   color-scheme: dark;
 }
+html { overflow-y: auto }
 </style>

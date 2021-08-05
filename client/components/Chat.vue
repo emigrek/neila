@@ -1,8 +1,13 @@
 <template>
     <v-sheet elevation="10" class="pa-6 rounded-lg">
-        <v-sheet class="title pa-3 mb-2 d-flex" color="alien" elevation="1" rounded>
+        <v-sheet class="title pa-3 d-flex" color="alien" elevation="1" rounded>
             <div class="title black--text">Czat 💬</div>
             <div class="ml-auto">
+                <v-btn color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
+                    <v-icon>
+                        mdi-cog
+                    </v-icon>
+                </v-btn>
                 <v-btn
                     depressed
                     color="error"
@@ -21,10 +26,17 @@
                 </v-btn>
             </div>
         </v-sheet>
-        <v-sheet class="box py-3" rounded>
+        <v-sheet class="box pb-3" rounded>
+            <v-banner
+                :value="storage.stranger && (storage.stranger) ? storage.stranger.motto.length : false"
+            > 
+                <div class="motto px-3 py-2 rounded-lg grey darken-4 grey--text">
+                    {{ (storage.stranger) ? storage.stranger.motto : ''}}
+                </div>
+            </v-banner>
             <div id="messages" style="height: 500px;overflow-y: scroll;">
                 <div v-for="item in storage.messages" :key="item.id">
-                    <div class="mb-3" v-if="!item.author">
+                    <div class="my-3" v-if="!item.author">
                         <div class="subtitle-1 text-center grey--text">
                             {{ item.content }}
                         </div>
@@ -93,7 +105,7 @@ export default {
                 content: "Nawiązywanie połączenia... 🔭"
             });
 
-            this.socket.emit('queue up', {});
+            this.socket.emit('queue up', this.storage.user);
             this.$store.commit('storage/SET_SEARCHING', true);
         },
         async disconnect() {
@@ -123,7 +135,8 @@ export default {
                 created: moment().format(),
                 content: `Nawiązano łączność, przywitaj się! 👋`
             });
-
+            
+            this.$store.commit('storage/SET_STRANGER', room.user);
             this.$store.commit('storage/SET_ROOM', room);
             this.$store.commit('storage/SET_SEARCHING', false);
         });
