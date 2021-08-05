@@ -19,6 +19,10 @@ io.on('connection', (socket) => {
         reception.match(user);
     });
 
+    socket.on('queue down', () => {
+        reception.removeUserFromQueue(socket.id);
+    });
+
     socket.on('message', (data) => {
         var { name } = reception.getRoom(socket.id);
         socket.broadcast.to(name).emit('message', data);
@@ -40,6 +44,7 @@ io.on('connection', (socket) => {
         socket.broadcast.to(name).emit("connection end");
 
         reception.destroyRoom(name);
+        reception.removeUser(socket.id);
     });
 });
 

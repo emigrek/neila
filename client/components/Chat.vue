@@ -19,10 +19,18 @@
                 <v-btn
                     depressed
                     color="primary"
-                    v-if="storage.room == null && storage.searching == false"
-                    @click="connect"
+                    v-if="storage.searching == true"
+                    @click="stopSearching"
                 >
-                    Połącz się
+                    Przestań szukać
+                </v-btn>
+                <v-btn
+                    depressed
+                    color="primary"
+                    v-if="storage.room == null && storage.searching == false"
+                    @click="search"
+                >
+                    Szukaj
                 </v-btn>
             </div>
         </v-sheet>
@@ -97,7 +105,8 @@ export default {
 
             this.message = '';
         },
-        async connect() {
+        async search() {
+            this.$store.commit('storage/SET_STRANGER', null);
             this.$store.commit('storage/CLEAR_MESSAGES');
             this.$store.commit('storage/ADD_MESSAGE', {
                 id: nanoid(),
@@ -107,6 +116,13 @@ export default {
 
             this.socket.emit('queue up', this.storage.user);
             this.$store.commit('storage/SET_SEARCHING', true);
+        },
+        async stopSearching() {
+            this.$store.commit('storage/SET_STRANGER', null);
+            this.$store.commit('storage/CLEAR_MESSAGES');
+
+            this.socket.emit('queue down');
+            this.$store.commit('storage/SET_SEARCHING', false);
         },
         async disconnect() {
             this.socket.emit("leave");

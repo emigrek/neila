@@ -44,6 +44,9 @@
                 </v-btn>
             </v-col>
         </v-row>
+        <div class="text-center mt-2 grey--text text--darken-2">
+            <p class="caption">(zmiany obowiązują od następnej rozmowy)</p>
+        </div>
     </v-overlay>
 </template>
 

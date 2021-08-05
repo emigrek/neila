@@ -37,6 +37,18 @@ class Reception {
         return user;
     }
 
+    removeUser(socketId) {
+        this.users = this.users.filter(user => user.socket.id !== socketId);
+
+        return;
+    }
+
+    removeUserFromQueue(socketId) {
+        this.queue = this.queue.filter(user => user.socket.id !== socketId);
+
+        return;
+    }
+
     getUser(socketId) {
         return this.users.filter(user => user.socket.id === socketId)[0];
     }
