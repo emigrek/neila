@@ -52,13 +52,12 @@
                         </div>
                         <Message v-else :last="storage.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
                     </div>
-                    <Typing v-if="typing"/>
+                    <Typing v-if="typing" :lastFromStranger="storage.messages[storage.messages.length-1].author != socket.id"/>
                 </div>
             </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
-            
-            <transition name="slide-up" mode="in-out">
+            <div class="d-flex" :class="{ 'flex-column-reverse': !typing, 'flex-column': typing }">
                 <v-text-field
                     :style="{ opacity: `${typing ? '0.9' : '0.2'}` }"
                     v-model="strangerMessage"
@@ -70,25 +69,25 @@
                     readonly="readonly"
                     color="alien"
                     no-details
-                    v-if="storage.stranger"
                     hide-details
                 ></v-text-field>
-            </transition>
-            <div class="human">
-                <v-text-field
-                    v-model="message"
-                    placeholder="Napisz coś..."
-                    filled
-                    rounded
-                    append-outer-icon="mdi-send"
-                    @click:append-outer="send"
-                    background-color="grey darken-3"
-                    v-on:keyup.enter="send"
-                    color="light-blue lighten-1"
-                    @keyup="type"
-                    no-details
-                    hide-details
-                ></v-text-field>
+                <div class="human">
+                    <v-text-field
+                        :style="{ opacity: `${!typing ? '0.9' : '0.2'}` }"
+                        v-model="message"
+                        placeholder="Napisz coś..."
+                        filled
+                        rounded
+                        append-outer-icon="mdi-send"
+                        @click:append-outer="send"
+                        background-color="grey darken-3"
+                        v-on:keyup.enter="send"
+                        color="light-blue lighten-1"
+                        @keyup="type"
+                        no-details
+                        hide-details
+                    ></v-text-field>
+                </div>
             </div>
         </v-sheet>
     </v-sheet>
