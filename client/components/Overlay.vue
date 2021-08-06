@@ -1,6 +1,6 @@
 <template>
     <v-overlay
-        opacity="0.90"
+        opacity="0.95"
         absolute
         :value="storage.overlay"
         dark
