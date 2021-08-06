@@ -36,7 +36,7 @@
         </v-sheet>
         <v-sheet class="box pb-3" rounded>
             <v-banner
-                :value="storage.stranger && (storage.stranger) ? storage.stranger.motto.length : false"
+                :value="storage.stranger && (storage.stranger) ? (storage.stranger.motto.length > 0) : false"
             > 
                 <div class="motto px-3 py-2 rounded-lg grey darken-4 grey--text">
                     {{ (storage.stranger) ? storage.stranger.motto : ''}}
@@ -44,36 +44,43 @@
             </v-banner>
             <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
                 <div style="display: flex;flex-flow: column nowrap;padding-top: 10px;">
-                    <div v-for="(item, index) in storage.messages" :key="item.id">
-                        <div class="my-3" v-if="!item.author">
-                            <div class="subtitle-1 text-center grey--text">
-                                {{ item.content }}
+                    <transition-group name="slide-fade">
+                        <div v-for="(item, index) in storage.messages" :key="item.id">
+                            <div class="my-3" v-if="!item.author">
+                                <div class="subtitle-1 text-center grey--text">
+                                    {{ item.content }}
+                                </div>
                             </div>
+                            <Message v-else :last="storage.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
                         </div>
-                        <Message v-else :last="storage.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
-                    </div>
-                    <Typing v-if="typing" :lastFromStranger="storage.messages[storage.messages.length-1].author != socket.id"/>
+                    </transition-group>
+                    <transition name="slide-fade">
+                        <Typing v-if="typing" :lastFromStranger="storage.messages[storage.messages.length-1].author != socket.id"/>
+                    </transition>
                 </div>
             </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
-            <div class="d-flex" :class="{ 'flex-column-reverse': !typing, 'flex-column': typing }">
-                <v-text-field
-                    :style="{ opacity: `${typing ? '0.9' : '0.2'}` }"
-                    v-model="strangerMessage"
-                    class="my-2"
-                    filled
-                    rounded
-                    append-outer-icon=":)"
-                    background-color="grey darken-3"
-                    readonly="readonly"
-                    color="alien"
-                    no-details
-                    hide-details
-                ></v-text-field>
+            <div class="d-flex flex-column">
+                <transition name="slide-fade">
+                    <v-text-field
+                        :style="{ opacity: `${typing ? '0.2' : '0.1'}` }"
+                        v-model="strangerMessage"
+                        v-if="storage.stranger"
+                        class="my-2"
+                        filled
+                        rounded
+                        append-outer-icon=":)"
+                        background-color="grey darken-3"
+                        readonly="readonly"
+                        color="alien"
+                        no-details
+                        style="margin-bottom: -1rem !important;scale: 0.9;"
+                        hide-details
+                    ></v-text-field>
+                </transition>
                 <div class="human">
                     <v-text-field
-                        :style="{ opacity: `${!typing ? '0.9' : '0.2'}` }"
                         v-model="message"
                         placeholder="Napisz coś..."
                         filled
@@ -94,7 +101,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 import { nanoid } from "nanoid";
 import moment from "moment";
 
@@ -158,6 +165,7 @@ export default {
             if(!res) return;
 
             this.socket.emit("leave");
+            this.$store.commit('storage/SET_STRANGER', null);
             this.$store.commit('storage/SET_ROOM', null);
 
             this.$store.commit('storage/ADD_MESSAGE', {
@@ -208,6 +216,7 @@ export default {
             });
 
             this.$store.commit('storage/SET_ROOM', null);
+            this.$store.commit('storage/SET_STRANGER', null);
             this.resetStranger();
         });
 
@@ -222,10 +231,10 @@ export default {
     },
     watch: {
         'storage.messages.length': function() {
-            setTimeout(() => this.scrollToEnd(), 50);
+            setTimeout(() => this.scrollToEnd(), 30);
         },
         'typing': function() {
-            setTimeout(() => this.scrollToEnd(), 50);
+            setTimeout(() => this.scrollToEnd(), 30);
         }
     },
     computed: {
@@ -254,5 +263,17 @@ export default {
     overflow-y: hidden;
     overflow-x: hidden;
     padding: .5rem;
+}
+.slide-fade-enter-active {
+  transition: all .5s ease;
+}
+.slide-fade-leave-active {
+  transition: all .1s ease;
+}
+.slide-fade-enter {
+  transform: translateY(-5px);
+}
+.slide-fade-leave-to {
+    opacity: 0;
 }
 </style>

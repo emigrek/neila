@@ -14,7 +14,7 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   head: {
-    title: `neila`,
+    title: `nelia`,
   },
   transition: "fade",
   components: {

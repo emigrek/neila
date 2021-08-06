@@ -12,10 +12,10 @@
 import { mapState, mapMutations } from "vuex";
 
 export default {
-    name: 'default',
-    computed: {
-        ...mapState(["storage"]),
-    },
+  name: 'default',
+  computed: {
+    ...mapState(["storage"]),
+  }
 }
 </script>
 
@@ -23,5 +23,8 @@ export default {
 :root {
   color-scheme: dark;
 }
-html { overflow-y: auto }
+html { 
+  overflow-y: auto;
+  scroll-behavior: smooth; 
+}
 </style>
