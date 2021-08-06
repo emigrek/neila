@@ -64,18 +64,16 @@
             <div class="d-flex flex-column">
                 <transition name="slide-fade">
                     <v-text-field
-                        :style="{ opacity: `${typing ? '0.2' : '0.1'}` }"
                         v-model="strangerMessage"
                         v-if="storage.stranger"
-                        class="my-2"
+                        class="stranger-input my-2"
+                        :class="{'typing': typing }"
                         filled
                         rounded
-                        append-outer-icon=":)"
                         background-color="grey darken-3"
                         readonly="readonly"
                         color="alien"
                         no-details
-                        style="margin-bottom: -1rem !important;scale: 0.9;"
                         hide-details
                     ></v-text-field>
                 </transition>
@@ -263,6 +261,18 @@ export default {
     overflow-y: hidden;
     overflow-x: hidden;
     padding: .5rem;
+}
+.stranger-input {
+    opacity: 0.1;
+    margin-bottom: -1rem !important;
+    scale: 0.85;
+    margin-right: 2rem;
+    transition: all 0.3s ease;
+}
+.typing {
+    opacity: 0.2;
+    -webkit-box-shadow: 0px 15px 30px 0px rgba(121,219,117,0.25); 
+    box-shadow: 0px 15px 30px 0px rgba(121,219,117,0.25);
 }
 .slide-fade-enter-active {
   transition: all .5s ease;
