@@ -1,11 +1,13 @@
 <template>
-    <div class="px-2 py-1">
-        <div class="d-flex flex-row">
-            <v-sheet class="message rounded-xl px-3 py-3 black--text" color="alien">
-                <v-skeleton-loader type="text" width="50" light></v-skeleton-loader>
-            </v-sheet>
+    <v-sheet class="message px-4 py-3 grey--text text--lighten-4" :style="{ 
+        borderLeft: `5px solid rgb(121, 219, 117)` ,
+    }">
+        <div class="d-flex">
+            <v-skeleton-loader class="me-1" width="6px" height="6px" type="text"/>
+            <v-skeleton-loader class="me-1" width="6px" height="6px" type="text"/>
+            <v-skeleton-loader width="6px" height="6px" type="text"/>
         </div>
-    </div>
+    </v-sheet>
 </template>
 
 <script>

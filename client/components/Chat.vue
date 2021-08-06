@@ -42,33 +42,54 @@
                     {{ (storage.stranger) ? storage.stranger.motto : ''}}
                 </div>
             </v-banner>
-            <div id="messages" style="height: 500px;overflow-y: scroll;">
-                <div v-for="item in storage.messages" :key="item.id">
-                    <div class="my-3" v-if="!item.author">
-                        <div class="subtitle-1 text-center grey--text">
-                            {{ item.content }}
+            <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
+                <div style="display: flex;flex-flow: column nowrap;padding-top: 10px;">
+                    <div v-for="(item, index) in storage.messages" :key="item.id">
+                        <div class="my-3" v-if="!item.author">
+                            <div class="subtitle-1 text-center grey--text">
+                                {{ item.content }}
+                            </div>
                         </div>
+                        <Message v-else :last="storage.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
                     </div>
-                    <Message v-else :content="item.content" :me="item.author == socket.id" :created="item.created"/>
+                    <Typing v-if="typing"/>
                 </div>
-                <Typing v-if="typing"/>
             </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
-            <v-text-field
-                v-model="message"
-                placeholder="Napisz coś..."
-                filled
-                rounded
-                append-outer-icon="mdi-send"
-                @click:append-outer="send"
-                background-color="grey darken-3"
-                v-on:keyup.enter="send"
-                color="alien"
-                @keyup="type"
-                no-details
-                hide-details
-            ></v-text-field>
+            
+            <transition name="slide-up" mode="in-out">
+                <v-text-field
+                    :style="{ opacity: `${typing ? '0.9' : '0.2'}` }"
+                    v-model="strangerMessage"
+                    class="my-2"
+                    filled
+                    rounded
+                    append-outer-icon=":)"
+                    background-color="grey darken-3"
+                    readonly="readonly"
+                    color="alien"
+                    no-details
+                    v-if="storage.stranger"
+                    hide-details
+                ></v-text-field>
+            </transition>
+            <div class="human">
+                <v-text-field
+                    v-model="message"
+                    placeholder="Napisz coś..."
+                    filled
+                    rounded
+                    append-outer-icon="mdi-send"
+                    @click:append-outer="send"
+                    background-color="grey darken-3"
+                    v-on:keyup.enter="send"
+                    color="light-blue lighten-1"
+                    @keyup="type"
+                    no-details
+                    hide-details
+                ></v-text-field>
+            </div>
         </v-sheet>
     </v-sheet>
 </template>
@@ -88,7 +109,8 @@ export default {
         return {
             socket: null,
             input: '',
-            typing: false
+            strangerMessage: '',
+            typing: false,
         };
     },
     methods: {
@@ -144,15 +166,22 @@ export default {
                 created: moment().format(),
                 content: "Rozłączyłeś się. 🤫"
             });
+
+            this.resetStranger();
         },
         async type() {
-            if(this.storage.room)
-                this.socket.emit('typing', this.input.length > 0);
+            if(this.storage.room) {
+                this.socket.emit('typing', { input: this.input, typing: this.input.length > 0 });
+            }
         },
         scrollToEnd() {
             const element = document.getElementById('messages');
             element.scrollTop = element.scrollHeight;
         },
+        resetStranger() {
+            this.strangerMessage = '';
+            this.typing = false;
+        }
     },
     mounted() {
         moment.locale('pl');
@@ -180,18 +209,23 @@ export default {
             });
 
             this.$store.commit('storage/SET_ROOM', null);
+            this.resetStranger();
         });
 
         this.socket.on('message', (data) => {
             this.$store.commit('storage/ADD_MESSAGE', data);
         });
 
-        this.socket.on('typing', (state) => {
-            this.typing = state;
+        this.socket.on('typing', ({ input, typing }) => {
+            this.typing = typing;
+            this.strangerMessage = input;
         });
     },
     watch: {
         'storage.messages.length': function() {
+            setTimeout(() => this.scrollToEnd(), 50);
+        },
+        'typing': function() {
             setTimeout(() => this.scrollToEnd(), 50);
         }
     },
