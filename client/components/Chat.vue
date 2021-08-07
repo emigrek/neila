@@ -1,38 +1,46 @@
 <template>
     <v-sheet elevation="10" class="pa-6 rounded-lg">
-        <v-sheet class="title pa-3 d-flex" color="alien" elevation="1" rounded>
-            <div class="title black--text">Czat 💬</div>
+        <v-sheet class="title pa-3 d-flex justify-center align-center" color="alien" elevation="1" rounded>
+            <div class="title black--text font-weight-bold">nelia 👽</div>
             <div class="ml-auto">
-                <v-btn color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
+                <v-btn text color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
                     <v-icon>
                         mdi-cog
                     </v-icon>
                 </v-btn>
-                <v-btn
-                    depressed
-                    color="error"
-                    v-if="storage.room !== null"
-                    @click="disconnect"
-                >
-                    Rozłącz się
-                </v-btn>
-                <v-btn
-                    depressed
-                    color="primary"
-                    v-if="storage.searching == true"
-                    @click="stopSearching"
-                >
-                    Przestań szukać
-                </v-btn>
-                <v-btn
-                    depressed
-                    color="primary"
-                    v-if="storage.room == null && storage.searching == false"
-                    @click="search"
-                >
-                    Szukaj
-                </v-btn>
             </div>
+        </v-sheet>
+        <v-sheet color="black" class="navigation d-flex justify-center align-center py-1 my-2 rounded-lg">
+            <v-btn
+                depressed
+                small
+                text
+                color="error"
+                v-if="storage.room !== null"
+                @click="disconnect"
+            >
+                Rozłącz się 🤝
+            </v-btn>
+            <v-btn
+                depressed
+                small
+                text
+                color="alien"
+                v-if="storage.searching == true"
+                @click="stopSearching"
+            >
+                Przestań szukać
+            </v-btn>
+            <v-btn
+                depressed
+                small
+                text
+                color="alien"
+                v-if="storage.room == null && storage.searching == false"
+                @click="search"
+            >
+                Szukaj 🕵️‍♂️
+            </v-btn>
         </v-sheet>
         <v-sheet class="box pb-3" rounded>
             <v-banner
@@ -68,6 +76,7 @@
                         v-if="storage.stranger"
                         class="stranger-input my-2"
                         :class="{'typing': typing }"
+                        append-outer-icon="🛸"
                         filled
                         rounded
                         background-color="grey darken-3"
@@ -266,7 +275,6 @@ export default {
     opacity: 0.1;
     margin-bottom: -1rem !important;
     scale: 0.85;
-    margin-right: 2rem;
     transition: all 0.3s ease;
 }
 .typing {

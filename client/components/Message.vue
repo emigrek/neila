@@ -1,8 +1,8 @@
 <template>
     <v-hover v-slot="{ hover }">
-        <v-sheet class="message px-4 py-3 grey--text text--lighten-2" :style="{ 
-            borderLeft: `5px solid ${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}` ,
-            marginTop: `${(last && last.author == author) ? '0px': '1rem'}`
+        <v-sheet class="message px-4 py-2 grey--text text--lighten-2" :style="{ 
+            borderLeft: `2px solid ${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}` ,
+            marginTop: `${(last && last.author == author) ? '0px': '0.8rem'}`
         }">
             {{content}}
             <transition name="fade" mode="out-in">
