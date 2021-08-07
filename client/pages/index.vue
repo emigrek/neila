@@ -13,10 +13,22 @@
 import { mapState, mapMutations } from "vuex";
 
 export default {
-  head: {
-    title: `nelia`,
+  head() {
+    return {
+      title: this.storage.title,
+    }
   },
   transition: "fade",
+  created() {
+    if (process.client) { 
+	    window.addEventListener('visibilitychange', this.visibilityChange, false);
+    }
+  },
+  methods: {
+    visibilityChange(e) {
+      this.$store.commit("storage/SET_PAGE_VISIBLE", !window.document.hidden);
+    },
+  },
   components: {
     Chat: () => import("~/components/Chat"),
     Overlay: () => import("~/components/Overlay")

@@ -4,8 +4,8 @@
             <div class="title black--text font-weight-bold">nelia 👽</div>
             <div class="ml-auto">
                 <v-btn text color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
-                    <v-icon>
-                        mdi-cog
+                    <v-icon class="emoji-icon">
+                        ⚙️
                     </v-icon>
                 </v-btn>
             </div>
@@ -111,6 +111,7 @@
 import { mapState } from "vuex";
 import { nanoid } from "nanoid";
 import moment from "moment";
+import notification from "@/assets/sounds/inyourplate.mp3";
 
 export default {
     name: "Chat",
@@ -124,6 +125,9 @@ export default {
             input: '',
             strangerMessage: '',
             typing: false,
+            audio: {
+                notification: null
+            }
         };
     },
     methods: {
@@ -228,6 +232,11 @@ export default {
         });
 
         this.socket.on('message', (data) => {
+            if(!this.storage.pageVisible) {
+                this.$store.commit("storage/SET_PAGE_TITLE", "Nowa wiadomość! ✉️");
+                this.audio.notification = new Audio(notification);
+                this.audio.notification.play();
+            }
             this.$store.commit('storage/ADD_MESSAGE', data);
         });
 
@@ -239,6 +248,9 @@ export default {
     watch: {
         'storage.messages.length': function() {
             setTimeout(() => this.scrollToEnd(), 30);
+        },
+        'storage.pageVisible': function() {
+            if(this.storage.pageVisible) this.$store.commit("storage/SET_PAGE_TITLE", "nelia");
         },
         'typing': function() {
             setTimeout(() => this.scrollToEnd(), 30);
@@ -270,6 +282,9 @@ export default {
     overflow-y: hidden;
     overflow-x: hidden;
     padding: .5rem;
+}
+.emoji-icon {
+    font-style: normal;
 }
 .stranger-input {
     opacity: 0.1;
