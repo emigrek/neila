@@ -1,7 +1,7 @@
 export const state = () => ({
     title: 'nelia',
     socket: null,
-    user: {},
+    user: null,
     stranger: null,
     room: null,
     searching: false,

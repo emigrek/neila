@@ -44,8 +44,12 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <div class="text-center mt-2 grey--text text--darken-2">
-            <p class="caption">(zmiany obowiązują od następnej rozmowy)</p>
+        <v-divider class="my-5" inset light/>
+        <div class="text-center grey--text text--darken-2">
+            <p class="caption">
+                Klikając przycisk potwierdzasz że posiadasz 18 lat, lub 13 za zgodą rodzica.<br/>
+                Po wyjściu ze strony, wszystkie twoje informacje zostają usunięte.
+            </p>
         </div>
     </v-overlay>
 </template>

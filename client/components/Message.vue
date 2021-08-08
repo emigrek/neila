@@ -1,15 +1,22 @@
 <template>
-    <v-hover v-slot="{ hover }">
-        <v-sheet class="message px-4 py-2 grey--text text--lighten-2" :style="{ 
-            borderLeft: `2px solid ${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}` ,
-            marginTop: `${(last && last.author == author) ? '0px': '0.8rem'}`
+    <div>
+        <span class="author overline" v-if="last && last.author != author" :style="{  
+            marginTop: `${(last && last.author == author) ? '0px': '0.4rem'}`,
+            color: `${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}`
         }">
-            {{content}}
-            <transition name="fade" mode="out-in">
-                <span v-if="hover" class="created grey--text text--darken-2">• {{formatTime(created)}}</span>
-            </transition>
-        </v-sheet>
-    </v-hover>
+            {{ (me) ? "Ja" : "Obcy" }}
+        </span>
+        <v-hover v-slot="{ hover }">
+            <v-sheet class="message px-4 py-2 grey--text text--lighten-2" :style="{ 
+                borderLeft: `2px solid ${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}`
+            }">
+                {{content}}
+                <transition name="fade" mode="out-in">
+                    <span v-if="hover" class="created grey--text text--darken-2">• {{formatTime(created)}}</span>
+                </transition>
+            </v-sheet>
+        </v-hover>
+    </div>
 </template>
 
 <script>

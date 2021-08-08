@@ -70,38 +70,20 @@
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
             <div class="d-flex flex-column">
-                <transition name="slide-fade">
-                    <v-text-field
-                        v-model="strangerMessage"
-                        v-if="storage.stranger"
-                        class="stranger-input my-2"
-                        :class="{'typing': typing }"
-                        append-outer-icon="🛸"
-                        filled
-                        rounded
-                        background-color="grey darken-3"
-                        readonly="readonly"
-                        color="alien"
-                        no-details
-                        hide-details
-                    ></v-text-field>
-                </transition>
-                <div class="human">
-                    <v-text-field
-                        v-model="message"
-                        placeholder="Napisz coś..."
-                        filled
-                        rounded
-                        append-outer-icon="mdi-send"
-                        @click:append-outer="send"
-                        background-color="grey darken-3"
-                        v-on:keyup.enter="send"
-                        color="light-blue lighten-1"
-                        @keyup="type"
-                        no-details
-                        hide-details
-                    ></v-text-field>
-                </div>
+                <v-text-field
+                    v-model="message"
+                    placeholder="Napisz coś..."
+                    filled
+                    rounded
+                    append-outer-icon="mdi-send"
+                    @click:append-outer="send"
+                    background-color="grey darken-3"
+                    v-on:keyup.enter="send"
+                    color="light-blue lighten-1"
+                    @keyup="type"
+                    no-details
+                    hide-details
+                ></v-text-field>
             </div>
         </v-sheet>
     </v-sheet>
@@ -123,7 +105,6 @@ export default {
         return {
             socket: null,
             input: '',
-            strangerMessage: '',
             typing: false,
             audio: {
                 notification: null
@@ -133,6 +114,7 @@ export default {
     methods: {
         async send() {
             if(this.storage.room == null) return;
+            if(!this.message.length || !this.message) return;
 
             var data = {
                 id: nanoid(),
@@ -189,7 +171,7 @@ export default {
         },
         async type() {
             if(this.storage.room) {
-                this.socket.emit('typing', { input: this.input, typing: this.input.length > 0 });
+                this.socket.emit('typing', { typing: this.input.length > 0 });
             }
         },
         scrollToEnd() {
@@ -240,9 +222,8 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', data);
         });
 
-        this.socket.on('typing', ({ input, typing }) => {
+        this.socket.on('typing', ({ typing }) => {
             this.typing = typing;
-            this.strangerMessage = input;
         });
     },
     watch: {
@@ -259,8 +240,9 @@ export default {
     computed: {
         message: {
             set(val) {
-                if(!val) return this.input = '';
+                if(!val || val.length <= 0) return this.input = '';
                 this.input = val.trim();
+                console.log(this.input);
             },
             get() {
                 return this.input;
@@ -285,12 +267,6 @@ export default {
 }
 .emoji-icon {
     font-style: normal;
-}
-.stranger-input {
-    opacity: 0.1;
-    margin-bottom: -1rem !important;
-    scale: 0.85;
-    transition: all 0.3s ease;
 }
 .typing {
     opacity: 0.2;
