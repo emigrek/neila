@@ -84,7 +84,6 @@ export default {
                 region: this.region
             };
 
-
             this.$store.commit("storage/SET_USER", user);
             this.$store.commit("storage/SET_OVERLAY", false);
         }

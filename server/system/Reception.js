@@ -11,19 +11,45 @@ class Reception {
         if(this.queue.length < 1) 
             return this.queue.push(user);
 
-        var peer = this.queue.pop();
+        var stranger = this.findStranger(user);
         var room = {
             name: nanoid(16),
-            users: [ user, peer ]
+            users: [ user, stranger ]
         }
 
-        peer.socket.join(room.name);
+        stranger.socket.join(room.name);
         user.socket.join(room.name);
 
         this.rooms.push(room);
 
-        peer.socket.emit("connection established", { name: room.name, user: user.data });
-        user.socket.emit("connection established", { name: room.name, user: peer.data });
+        stranger.socket.emit("connection established", { name: room.name, user: user.data });
+        user.socket.emit("connection established", { name: room.name, user: stranger.data });
+    }
+
+    findStranger(user) {
+        var { region } = user;
+        var candidates = [];
+
+        switch(region) {
+            case "Polska":
+                candidates = this.queue.filter(user => user.region != "poza Polską");
+                break;
+            case "poza Polską":
+                candidates = this.queue.filter(user => user.region == "poza Polską");
+                break;
+            default:
+                candidates = this.queue.filter(user => user.region == region);
+                break;
+        }
+
+        if(!candidates.length) {
+            candidates = this.queue;
+        }
+
+        var candidate = candidates[Math.floor(Math.random() * candidates.length)];
+        this.queue = this.queue.filter(user => user.socket.id != candidate.socket.id);
+
+        return candidate;
     }
 
     createUser(socket, data) {
@@ -39,13 +65,11 @@ class Reception {
 
     removeUser(socketId) {
         this.users = this.users.filter(user => user.socket.id !== socketId);
-
         return;
     }
 
     removeUserFromQueue(socketId) {
         this.queue = this.queue.filter(user => user.socket.id !== socketId);
-
         return;
     }
 

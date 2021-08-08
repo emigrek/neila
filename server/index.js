@@ -16,11 +16,18 @@ const reception = new Reception();
 io.on('connection', (socket) => {
     socket.on('queue up', (data) => {
         var user = reception.createUser(socket, data);
+
         reception.match(user);
+
+        socket.broadcast.emit('users length update', reception.queue.length);
+        socket.emit('users length update', reception.queue.length);
     });
 
     socket.on('queue down', () => {
         reception.removeUserFromQueue(socket.id);
+
+        socket.broadcast.emit('users length update', reception.queue.length);
+        socket.emit('users length update', reception.queue.length);
     });
 
     socket.on('message', (data) => {

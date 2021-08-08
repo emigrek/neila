@@ -2,6 +2,7 @@
     <v-sheet elevation="10" class="pa-6 rounded-lg">
         <v-sheet class="title pa-3 d-flex justify-center align-center" color="alien" elevation="1" rounded>
             <div class="title black--text font-weight-bold">nelia 👽</div>
+            <div class="caption red--text text--darken-2 ms-1">• {{active}}</div>
             <div class="ml-auto">
                 <v-btn text color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
                     <v-icon class="emoji-icon">
@@ -108,7 +109,8 @@ export default {
             typing: false,
             audio: {
                 notification: null
-            }
+            },
+            active: 0
         };
     },
     methods: {
@@ -224,6 +226,11 @@ export default {
 
         this.socket.on('typing', ({ typing }) => {
             this.typing = typing;
+        });
+
+        this.socket.on("users length update", (active) => {
+            console.log(active);
+            this.active = active;
         });
     },
     watch: {
