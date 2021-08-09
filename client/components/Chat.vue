@@ -70,14 +70,12 @@
             </div>
         </v-sheet>
         <v-sheet class="inputs px-2" rounded>
-            <div class="d-flex flex-column">
+            <div class="d-flex justify-center align-center">
                 <v-text-field
                     v-model="message"
                     placeholder="Napisz coś..."
                     filled
                     rounded
-                    append-outer-icon="mdi-send"
-                    @click:append-outer="send"
                     background-color="grey darken-3"
                     v-on:keyup.enter="send"
                     color="light-blue lighten-1"
@@ -85,6 +83,17 @@
                     no-details
                     hide-details
                 ></v-text-field>
+                <v-btn
+                    class="ms-3 black--text"
+                    color="alien"
+                    rounded
+                    @click="send"
+                    :disabled="!message.length || !storage.room"
+                    large
+                    pill
+                >
+                    Wyślij 📡
+                </v-btn>
             </div>
         </v-sheet>
     </v-sheet>
@@ -110,7 +119,8 @@ export default {
             audio: {
                 notification: null
             },
-            active: 0
+            active: 0,
+            unseenMessages: 0
         };
     },
     methods: {
@@ -130,6 +140,8 @@ export default {
             this.$store.commit('storage/ADD_MESSAGE', data);
 
             this.message = '';
+
+            this.type();
         },
         async search() {
             this.$store.commit('storage/SET_STRANGER', null);
@@ -169,7 +181,7 @@ export default {
                 content: "Rozłączyłeś się. 🤫"
             });
 
-            this.resetStranger();
+            this.typing = false;
         },
         async type() {
             if(this.storage.room) {
@@ -179,10 +191,6 @@ export default {
         scrollToEnd() {
             const element = document.getElementById('messages');
             element.scrollTop = element.scrollHeight;
-        },
-        resetStranger() {
-            this.strangerMessage = '';
-            this.typing = false;
         }
     },
     mounted() {
@@ -217,7 +225,8 @@ export default {
 
         this.socket.on('message', (data) => {
             if(!this.storage.pageVisible) {
-                this.$store.commit("storage/SET_PAGE_TITLE", "Nowa wiadomość! ✉️");
+                this.unseenMessages++;
+                this.$store.commit("storage/SET_PAGE_TITLE", `(${this.unseenMessages} ✉️) nelia`);
                 this.audio.notification = new Audio(notification);
                 this.audio.notification.play();
             }
@@ -229,7 +238,6 @@ export default {
         });
 
         this.socket.on("users length update", (active) => {
-            console.log(active);
             this.active = active;
         });
     },
@@ -238,7 +246,10 @@ export default {
             setTimeout(() => this.scrollToEnd(), 30);
         },
         'storage.pageVisible': function() {
-            if(this.storage.pageVisible) this.$store.commit("storage/SET_PAGE_TITLE", "nelia");
+            if(this.storage.pageVisible) {
+                this.$store.commit("storage/SET_PAGE_TITLE", "nelia");
+                this.unseenMessages = 0;
+            }
         },
         'typing': function() {
             setTimeout(() => this.scrollToEnd(), 30);
@@ -249,7 +260,6 @@ export default {
             set(val) {
                 if(!val || val.length <= 0) return this.input = '';
                 this.input = val.trim();
-                console.log(this.input);
             },
             get() {
                 return this.input;
