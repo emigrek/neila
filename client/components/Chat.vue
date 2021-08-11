@@ -2,7 +2,7 @@
     <v-sheet elevation="10" class="pa-6 rounded-lg">
         <v-sheet class="title pa-3 d-flex justify-center align-center" color="alien" elevation="1" rounded>
             <div class="title black--text font-weight-bold">nelia 👽</div>
-            <div class="caption red--text text--darken-2 ms-1">• <span class="font-weight-bold">{{active}}</span></div>
+            <div class="caption red--text text--darken-2 ms-1">• <span class="font-weight-bold">{{active}}</span> online</div>
             <div class="ml-auto">
                 <v-btn text color="black" depressed @click="
                     $store.commit('sound/SET', !sound.enabled);
@@ -67,7 +67,7 @@
                     <transition-group name="slide-fade">
                         <div v-for="(item, index) in app.messages" :key="item.id">
                             <div class="my-3" v-if="!item.author">
-                                <div class="subtitle-1 text-center grey--text">
+                                <div class="caption text-center grey--text">
                                     {{ item.content }}
                                 </div>
                             </div>
@@ -177,9 +177,13 @@ export default {
             const res = await this.$dialog.confirm({
                 text: 'Na pewno chcesz się rozłączyć?',
                 title: 'Stój! 😧',
-                actions: ['Nie, zostaję', 'Tak']
+                actions: {
+                    false: "Nie, rozmawiam dalej",
+                    true: "Rozłączam się"
+                }
             })
 
+            console.log(res);
             if(!res) return;
 
             this.socket.emit("leave");
