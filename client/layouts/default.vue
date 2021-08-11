@@ -9,13 +9,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-
 export default {
-  name: 'default',
-  computed: {
-    ...mapState(["storage"]),
-  }
+  name: 'default'
 }
 </script>
 

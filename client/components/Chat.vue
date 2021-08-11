@@ -2,9 +2,20 @@
     <v-sheet elevation="10" class="pa-6 rounded-lg">
         <v-sheet class="title pa-3 d-flex justify-center align-center" color="alien" elevation="1" rounded>
             <div class="title black--text font-weight-bold">nelia 👽</div>
-            <div class="caption red--text text--darken-2 ms-1">• {{active}}</div>
+            <div class="caption red--text text--darken-2 ms-1">• <span class="font-weight-bold">{{active}}</span></div>
             <div class="ml-auto">
-                <v-btn text color="black" depressed @click="$store.commit('storage/SET_OVERLAY', !storage.overlay)">
+                <v-btn text color="black" depressed @click="
+                    $store.commit('sound/SET', !sound.enabled);
+                    $toast(sound.enabled ? 'Dźwięki włączone 🔊' : 'Dźwięki wyłączone 🔈');
+                ">
+                    <v-icon v-if="sound.enabled" class="emoji-icon">
+                        🔊
+                    </v-icon>
+                    <v-icon v-else class="emoji-icon">
+                        🔈
+                    </v-icon>
+                </v-btn>
+                <v-btn text color="black" depressed @click="$store.commit('app/SET_OVERLAY', !app.overlay)">
                     <v-icon class="emoji-icon">
                         ⚙️
                     </v-icon>
@@ -17,7 +28,7 @@
                 small
                 text
                 color="error"
-                v-if="storage.room !== null"
+                v-if="app.room !== null"
                 @click="disconnect"
             >
                 Rozłącz się 🤝
@@ -27,7 +38,7 @@
                 small
                 text
                 color="alien"
-                v-if="storage.searching == true"
+                v-if="app.searching == true"
                 @click="stopSearching"
             >
                 Przestań szukać
@@ -37,7 +48,7 @@
                 small
                 text
                 color="alien"
-                v-if="storage.room == null && storage.searching == false"
+                v-if="app.room == null && app.searching == false"
                 @click="search"
             >
                 Szukaj 🕵️‍♂️
@@ -45,26 +56,26 @@
         </v-sheet>
         <v-sheet class="box pb-3" rounded>
             <v-banner
-                :value="storage.stranger && (storage.stranger) ? (storage.stranger.motto.length > 0) : false"
+                :value="app.stranger && (app.stranger) ? (app.stranger.motto.length > 0) : false"
             > 
                 <div class="motto px-3 py-2 rounded-lg grey darken-4 grey--text">
-                    {{ (storage.stranger) ? storage.stranger.motto : ''}}
+                    {{ (app.stranger) ? app.stranger.motto : ''}}
                 </div>
             </v-banner>
             <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
                 <div style="display: flex;flex-flow: column nowrap;padding-top: 10px;">
                     <transition-group name="slide-fade">
-                        <div v-for="(item, index) in storage.messages" :key="item.id">
+                        <div v-for="(item, index) in app.messages" :key="item.id">
                             <div class="my-3" v-if="!item.author">
                                 <div class="subtitle-1 text-center grey--text">
                                     {{ item.content }}
                                 </div>
                             </div>
-                            <Message v-else :last="storage.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
+                            <Message v-else :last="app.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == socket.id" :created="item.created"/>
                         </div>
                     </transition-group>
                     <transition name="slide-fade">
-                        <Typing v-if="typing" :lastFromStranger="storage.messages[storage.messages.length-1].author != socket.id"/>
+                        <Typing v-if="typing" :lastFromStranger="app.messages[app.messages.length-1].author != socket.id"/>
                     </transition>
                 </div>
             </div>
@@ -88,7 +99,7 @@
                     color="alien"
                     rounded
                     @click="send"
-                    :disabled="!message.length || !storage.room"
+                    :disabled="!message.length || !app.room"
                     large
                     pill
                 >
@@ -125,7 +136,7 @@ export default {
     },
     methods: {
         async send() {
-            if(this.storage.room == null) return;
+            if(this.app.room == null) return;
             if(!this.message.length || !this.message) return;
 
             var data = {
@@ -137,30 +148,30 @@ export default {
 
             this.socket.emit('message', data);
 
-            this.$store.commit('storage/ADD_MESSAGE', data);
+            this.$store.commit('app/ADD_MESSAGE', data);
 
             this.message = '';
 
             this.type();
         },
         async search() {
-            this.$store.commit('storage/SET_STRANGER', null);
-            this.$store.commit('storage/CLEAR_MESSAGES');
-            this.$store.commit('storage/ADD_MESSAGE', {
+            this.$store.commit('app/SET_STRANGER', null);
+            this.$store.commit('app/CLEAR_MESSAGES');
+            this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: "Nawiązywanie połączenia... 🔭"
             });
 
-            this.socket.emit('queue up', this.storage.user);
-            this.$store.commit('storage/SET_SEARCHING', true);
+            this.socket.emit('queue up', this.app.user);
+            this.$store.commit('app/SET_SEARCHING', true);
         },
         async stopSearching() {
-            this.$store.commit('storage/SET_STRANGER', null);
-            this.$store.commit('storage/CLEAR_MESSAGES');
+            this.$store.commit('app/SET_STRANGER', null);
+            this.$store.commit('app/CLEAR_MESSAGES');
 
             this.socket.emit('queue down');
-            this.$store.commit('storage/SET_SEARCHING', false);
+            this.$store.commit('app/SET_SEARCHING', false);
         },
         async disconnect() {
             const res = await this.$dialog.confirm({
@@ -172,10 +183,10 @@ export default {
             if(!res) return;
 
             this.socket.emit("leave");
-            this.$store.commit('storage/SET_STRANGER', null);
-            this.$store.commit('storage/SET_ROOM', null);
+            this.$store.commit('app/SET_STRANGER', null);
+            this.$store.commit('app/SET_ROOM', null);
 
-            this.$store.commit('storage/ADD_MESSAGE', {
+            this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: "Rozłączyłeś się. 🤫"
@@ -184,7 +195,7 @@ export default {
             this.typing = false;
         },
         async type() {
-            if(this.storage.room) {
+            if(this.app.room) {
                 this.socket.emit('typing', { typing: this.input.length > 0 });
             }
         },
@@ -196,41 +207,45 @@ export default {
     mounted() {
         moment.locale('pl');
         this.socket = this.$nuxtSocket({});
+        this.$store.commit("sound/INITIALIZE");
 
         this.socket.on('connection established', (room) => {
-            this.$store.commit('storage/CLEAR_MESSAGES');
+            this.$store.commit('app/CLEAR_MESSAGES');
 
-            this.$store.commit('storage/ADD_MESSAGE', {
+            this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: `Nawiązano łączność, przywitaj się! 👋`
             });
             
-            this.$store.commit('storage/SET_STRANGER', room.user);
-            this.$store.commit('storage/SET_ROOM', room);
-            this.$store.commit('storage/SET_SEARCHING', false);
+            this.$store.commit('app/SET_STRANGER', room.user);
+            this.$store.commit('app/SET_ROOM', room);
+            this.$store.commit('app/SET_SEARCHING', false);
         });
 
         this.socket.on('connection end', () => {
-            this.$store.commit('storage/ADD_MESSAGE', {
+            this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: `Utracono połączenie. 😥`
             });
 
-            this.$store.commit('storage/SET_ROOM', null);
-            this.$store.commit('storage/SET_STRANGER', null);
+            this.$store.commit('app/SET_ROOM', null);
+            this.$store.commit('app/SET_STRANGER', null);
             this.resetStranger();
         });
 
         this.socket.on('message', (data) => {
-            if(!this.storage.pageVisible) {
+            if(!this.page.visible) {
                 this.unseenMessages++;
-                this.$store.commit("storage/SET_PAGE_TITLE", `(${this.unseenMessages} ✉️) nelia`);
-                this.audio.notification = new Audio(notification);
-                this.audio.notification.play();
+                this.$store.commit("page/SET_TITLE", `(${this.unseenMessages} ✉️) nelia`);
+
+                if(this.sound.enabled) {
+                    this.audio.notification = new Audio(notification);
+                    this.audio.notification.play();
+                }
             }
-            this.$store.commit('storage/ADD_MESSAGE', data);
+            this.$store.commit('app/ADD_MESSAGE', data);
         });
 
         this.socket.on('typing', ({ typing }) => {
@@ -242,12 +257,12 @@ export default {
         });
     },
     watch: {
-        'storage.messages.length': function() {
+        'app.messages.length': function() {
             setTimeout(() => this.scrollToEnd(), 30);
         },
-        'storage.pageVisible': function() {
-            if(this.storage.pageVisible) {
-                this.$store.commit("storage/SET_PAGE_TITLE", "nelia");
+        'page.visible': function() {
+            if(this.page.visible) {
+                this.$store.commit("page/SET_TITLE", "nelia");
                 this.unseenMessages = 0;
             }
         },
@@ -265,7 +280,9 @@ export default {
                 return this.input;
             }
         },
-        ...mapState(["storage"]),
+        ...mapState(["app"]),
+        ...mapState(["page"]),
+        ...mapState(["sound"]),
     },
 }
 </script>

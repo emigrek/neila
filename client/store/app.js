@@ -1,13 +1,10 @@
 export const state = () => ({
-    title: 'nelia',
-    socket: null,
     user: null,
     stranger: null,
     room: null,
     searching: false,
     overlay: true,
-    messages: [],
-    pageVisible: true
+    messages: []
 })
 
 export const mutations = {
@@ -31,11 +28,5 @@ export const mutations = {
     },
     CLEAR_MESSAGES(state) {
         state.messages = [];
-    },
-    SET_PAGE_VISIBLE(state, status) {
-        state.pageVisible = status;
-    },
-    SET_PAGE_TITLE(state, title) {
-        state.title = title;
-    },
+    }
 };

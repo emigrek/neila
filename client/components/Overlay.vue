@@ -2,7 +2,7 @@
     <v-overlay
         opacity="0.95"
         absolute
-        :value="storage.overlay"
+        :value="app.overlay"
         dark
         color="alien"
         class="black--text"
@@ -84,12 +84,12 @@ export default {
                 region: this.region
             };
 
-            this.$store.commit("storage/SET_USER", user);
-            this.$store.commit("storage/SET_OVERLAY", false);
+            this.$store.commit("app/SET_USER", user);
+            this.$store.commit("app/SET_OVERLAY", false);
         }
     },
     computed: {
-        ...mapState(["storage"]),
+        ...mapState(["app"]),
     },
 }
 </script>

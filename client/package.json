@@ -15,7 +15,8 @@
     "nuxt": "^2.15.7",
     "nuxt-socket-io": "^1.1.18",
     "vuetify": "^2.5.5",
-    "vuetify-dialog": "^2.0.16"
+    "vuetify-dialog": "^2.0.16",
+    "vuetify-toast-snackbar": "^0.6.1"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.12.1"
