@@ -11,8 +11,31 @@
             <p class="display-1 font-weight-bold">Hej, ty! ✋</p>
             <p class="subtitle-1">Zdradź coś o sobię...</p>
         </div>
-        <v-row class="mt-6" align="center" justify="center">
-            <v-col cols="7">
+        <v-row align="center" justify="center">
+            <v-col xl="5" md="5" cols="4">
+                <v-slide-group
+                    v-model="emoji"
+                    class="pa-4"
+                    active-class="black"
+                    show-arrows
+                    mandatory
+                    light
+                    center-active
+                >
+                    <v-slide-item :value="emoji" v-for="emoji in emojis" :key="emoji" v-slot="{ active, toggle }">
+                        <v-card
+                            :color="active ? undefined : 'alien'"
+                            class="ma-1 px-1 py-2 display-2 elevation-0"
+                            @click="toggle"
+                        >
+                            {{emoji}}
+                        </v-card>
+                    </v-slide-item>
+                </v-slide-group>
+            </v-col>
+        </v-row>
+        <v-row align="center" justify="center">
+            <v-col xl="4" md="4" cols="3">
                 <v-textarea
                     :rules="mottoRules"
                     filled
@@ -25,7 +48,9 @@
                     counter
                 ></v-textarea>
             </v-col>
-            <v-col cols="7">
+        </v-row>
+        <v-row align="center" justify="center">
+            <v-col xl="4" md="4" cols="3">
                 <v-select
                     :items="regions"
                     label="Region wyszukiwania"
@@ -38,7 +63,9 @@
                 >
                 </v-select>
             </v-col>
-            <v-col class="text-center" cols="7">
+        </v-row>
+        <v-row align="center" justify="center">
+            <v-col cols="5" class="text-center">
                 <v-btn depressed x-large rounded no-details @click="apply">
                     Gotowe 👌
                 </v-btn>
@@ -64,6 +91,12 @@ export default {
             motto: '',
             mottoRules: [v => (v || '').length <= 50 || 'Maksymalnie 50 znaków'],
             region: 'Polska',
+            emoji: '👦',
+            emojis: [
+                '👦', '🧑', '👱', '👨', '🧔',
+                '👨‍🦰', '👨‍🦱', '👨‍🦳',
+                '👨‍🦲', '👧', '👩', '👩‍🦰', '👩‍🦱', '👩‍🦳', '👩‍🦲', '👱‍♀️'
+            ],
             regions: [
                 'Polska', 'poza Polską', 'Dolnośląskie', 
                 'Kujawsko-pomorskie', 'Lubelskie', 'Lubuskie', 
@@ -81,7 +114,8 @@ export default {
 
             var user = {
                 motto: this.motto,
-                region: this.region
+                region: this.region,
+                emoji: this.emoji
             };
 
             this.$store.commit("app/SET_USER", user);

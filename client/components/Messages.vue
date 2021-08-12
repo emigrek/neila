@@ -5,21 +5,30 @@
             rounded
             :value="app.stranger && (app.stranger) ? (app.stranger.motto.length > 0) : false"
         >
-            <div class="d-inline-flex justify-center align-center mb-1">
-                <div class="label grey--text">
-                    Motto
+            <div class="d-flex justify-center align-center">
+                <div class="mb-1 mx-2">
+                    <v-avatar
+                        color="grey darken-4"
+                        class="display-1 elevation-1"
+                        size="64"
+                    >{{ (app.stranger) ? app.stranger.emoji : ''}}</v-avatar>
                 </div>
-                <div class="motto mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2" style="word-wrap: break-word;word-break: break-word;">
-                    {{ (app.stranger) ? app.stranger.motto : ''}}
-                </div> 
-            </div>
-            <div class="d-inline-flex justify-center align-center mb-1">
-                <div class="label grey--text">
-                    Region
+                <div class="mb-1 mx-2">
+                    <div class="text-center grey--text text--darken-3 mb-1">
+                        Motto
+                    </div>
+                    <div class="mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2" style="word-wrap: break-word;word-break: break-word;">
+                        {{ (app.stranger) ? app.stranger.motto : ''}}
+                    </div> 
                 </div>
-                <div class="motto mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2">
-                    {{ (app.stranger) ? app.stranger.region : ''}}
-                </div> 
+                <div class="mb-1 mx-2">
+                    <div class="text-center grey--text text--darken-3 mb-1">
+                        Region
+                    </div>
+                    <div class="mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2">
+                        {{ (app.stranger) ? app.stranger.region : ''}}
+                    </div> 
+                </div>
             </div>
         </v-banner>
         <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
