@@ -1,5 +1,5 @@
 <template>
-    <v-sheet elevation="10" class="pa-6 rounded-lg">
+    <v-sheet color="#121212">
         <Header/>
         <Navigation/>
         <Messages/>

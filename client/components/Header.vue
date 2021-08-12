@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="title pa-3 d-flex justify-center align-center" color="alien" elevation="1" rounded>
+    <v-sheet class="title pa-3 mb-3 d-flex justify-center align-center" color="alien" elevation="24" rounded>
         <div class="title black--text font-weight-bold">nelia 👽</div>
         <div class="caption red--text text--darken-2 ms-1">• <span class="font-weight-bold">{{active}}</span> online</div>
         <div class="ml-auto">
@@ -28,6 +28,7 @@ import { mapState } from "vuex";
 
 export default {
     name: "Header",
+    transition: 'fade',
     data() {
         return {
             active: 0

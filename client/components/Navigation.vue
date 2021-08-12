@@ -1,5 +1,5 @@
 <template>
-    <v-sheet color="black" class="navigation d-flex justify-center align-center py-1 my-2 rounded-lg">
+    <v-sheet color="black" class="navigation d-flex justify-center align-center py-1 my-2 rounded-lg" elevation="18">
         <v-btn
             depressed
             small
@@ -40,6 +40,7 @@ import { nanoid } from "nanoid";
 
 export default {
     name: "Navigation",
+    transition: 'fade',
     methods: {
         async search() {
             this.$store.commit('app/SET_STRANGER', null);

@@ -1,10 +1,6 @@
 <template>
   <v-app dark>
-    <v-main>
-      <v-fade-transition>
-        <nuxt />
-      </v-fade-transition>
-    </v-main>
+    <nuxt />
   </v-app>
 </template>
 

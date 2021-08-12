@@ -1,10 +1,25 @@
 <template>
-    <v-sheet class="box pb-3" rounded>
+    <v-sheet class="box pa-4 rounded-lg mb-3" elevation="12">
         <v-banner
+            light
+            rounded
             :value="app.stranger && (app.stranger) ? (app.stranger.motto.length > 0) : false"
-        > 
-            <div class="motto px-3 py-2 rounded-lg grey darken-4 grey--text">
-                {{ (app.stranger) ? app.stranger.motto : ''}}
+        >
+            <div class="d-inline-flex justify-center align-center mb-1">
+                <div class="label grey--text">
+                    Motto
+                </div>
+                <div class="motto mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2" style="word-wrap: break-word;word-break: break-word;">
+                    {{ (app.stranger) ? app.stranger.motto : ''}}
+                </div> 
+            </div>
+            <div class="d-inline-flex justify-center align-center mb-1">
+                <div class="label grey--text">
+                    Region
+                </div>
+                <div class="motto mx-2 px-3 py-2 elevation-1 rounded-lg grey darken-4 grey--text text--darken-2">
+                    {{ (app.stranger) ? app.stranger.region : ''}}
+                </div> 
             </div>
         </v-banner>
         <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
@@ -35,6 +50,7 @@ import notification from "@/assets/sounds/inyourplate.mp3";
 
 export default {
     name: "Messages",
+    transition: 'fade',
     components: {
         Message: () => import("~/components/Message"),
         Typing: () => import("~/components/Typing"),

@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="inputs px-2" rounded>
+    <v-sheet class="inputs pa-5 rounded-lg" elevation="12">
         <div class="d-flex justify-center align-center">
             <v-text-field
                 v-model="message"
@@ -11,6 +11,7 @@
                 color="light-blue lighten-1"
                 @keyup="type"
                 no-details
+                class="elevation-3"
                 hide-details
             ></v-text-field>
             <v-btn
@@ -20,6 +21,7 @@
                 @click="send"
                 :disabled="!message.length || !app.room"
                 large
+                elevation="6"
                 pill
             >
                 Wyślij 📡
@@ -35,6 +37,7 @@ import moment from "moment";
 
 export default {
     name: "Input",
+    transition: 'fade',
     data() {
         return {
             input: ''
