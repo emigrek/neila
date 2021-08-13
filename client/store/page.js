@@ -1,6 +1,7 @@
 export const state = () => ({
     title: 'nelia',
-    visible: true
+    visible: true,
+    header: true
 })
 
 export const mutations = {
@@ -9,5 +10,8 @@ export const mutations = {
     },
     SET_TITLE(state, title) {
         state.title = title;
+    },
+    SET_HEADER(state, header) {
+        state.header = header;
     }
 }

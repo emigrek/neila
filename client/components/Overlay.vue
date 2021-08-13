@@ -25,7 +25,7 @@
                     <v-slide-item :value="emoji" v-for="emoji in emojis" :key="emoji" v-slot="{ active, toggle }">
                         <v-card
                             :color="active ? undefined : 'alien'"
-                            class="ma-1 px-1 py-2 display-2 elevation-0"
+                            class="ma-1 px-1 py-2 display-2 rounded-circle"
                             @click="toggle"
                         >
                             {{emoji}}
@@ -89,7 +89,7 @@ export default {
     data() {
         return {
             motto: '',
-            mottoRules: [v => (v || '').length <= 50 || 'Maksymalnie 50 znaków'],
+            mottoRules: [v => (v || '').length < 50 || 'Maksymalnie 50 znaków'],
             region: 'Polska',
             emoji: '👦',
             emojis: [

@@ -4,7 +4,8 @@ export const state = () => ({
     room: null,
     searching: false,
     overlay: true,
-    messages: []
+    messages: [],
+    strangerTyping: false
 })
 
 export const mutations = {
@@ -25,6 +26,9 @@ export const mutations = {
     },
     SET_OVERLAY(state, overlay) {
         state.overlay = overlay;
+    },
+    SET_STRANGER_TYPING(state, typing) {
+        state.strangerTyping = typing;
     },
     CLEAR_MESSAGES(state) {
         state.messages = [];

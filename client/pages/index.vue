@@ -24,10 +24,23 @@ export default {
 	    window.addEventListener('visibilitychange', this.visibilityChange, false);
     }
   },
+  beforeDestroy () {
+    if (typeof window === 'undefined') return
+
+    window.removeEventListener('resize', this.onResize, { passive: true })
+  },
+  mounted () {
+    this.onResize()
+
+    window.addEventListener('resize', this.onResize, { passive: true })
+  },
   methods: {
     visibilityChange(e) {
       this.$store.commit("page/SET_VISIBLE", !window.document.hidden);
     },
+    onResize () {
+      this.$store.commit("page/SET_HEADER", (window.innerWidth < 600) ? false : true);
+    }
   },
   components: {
     Chat: () => import("~/components/Chat"),

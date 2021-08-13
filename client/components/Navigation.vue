@@ -30,6 +30,15 @@
         >
             Szukaj 🕵️‍♂️
         </v-btn>
+        <v-btn
+            depressed
+            small
+            text
+            color="alien"
+            @click="$store.commit('page/SET_HEADER', !page.header)"
+        >
+            📱
+        </v-btn>
     </v-sheet>
 </template>
 
@@ -40,7 +49,6 @@ import { nanoid } from "nanoid";
 
 export default {
     name: "Navigation",
-    transition: 'fade',
     methods: {
         async search() {
             this.$store.commit('app/SET_STRANGER', null);
@@ -87,7 +95,8 @@ export default {
     mounted() {
     },
     computed: {
-        ...mapState(["app"])
+        ...mapState(["app"]),
+        ...mapState(["page"])
     }
 }
 </script>
