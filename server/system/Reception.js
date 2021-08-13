@@ -1,4 +1,5 @@
 const { nanoid } = require('nanoid');
+const moment = require('moment');
 
 class Reception {
     constructor() {
@@ -14,6 +15,7 @@ class Reception {
         var stranger = this.findStranger(user);
         var room = {
             name: nanoid(16),
+            created: moment().format(),
             users: [ user, stranger ]
         }
 

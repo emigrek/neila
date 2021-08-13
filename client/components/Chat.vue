@@ -2,7 +2,6 @@
     <v-sheet color="#121212">
         <v-slide-y-transition leave-absolute>
             <Header v-if="page.header"/>
-            <Stranger v-else/>
         </v-slide-y-transition>
         <v-slide-y-transition leave-absolute>
             <Navigation/>
@@ -32,6 +31,7 @@ export default {
         moment.locale('pl');
         this.$root.socket = this.$nuxtSocket({});
         this.$store.commit("sound/INITIALIZE");
+        this.$store.commit("conversations/INITIALIZE");
     },
     computed: {
         ...mapState(["page"])

@@ -5,7 +5,6 @@
             color: `${(!me) ? 'rgb(121, 219, 117)' : '#28B6F7'}`
         }">
             {{ (me) ? "Ja" : "Obcy" }}
-            {{ (me) ? app.user.emoji : app.stranger.emoji }}
         </span>
         <v-hover v-slot="{ hover }">
             <v-sheet class="message px-4 py-2 grey--text text--lighten-3" :style="{ 
