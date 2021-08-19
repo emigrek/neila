@@ -1,7 +1,7 @@
 <template>
     <v-sheet class="box pa-4 rounded-lg mb-3" elevation="12">
         <v-scale-transition leave-absolute>
-            <Stranger/>
+            <Stranger v-if="app.stranger" :emoji="app.stranger.emoji" :motto="app.stranger.motto" :region="app.stranger.region"/>
         </v-scale-transition>
         <div id="messages" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 400px;max-height: 400px;">
             <div style="display: flex;flex-flow: column nowrap;padding-top: 10px;">
@@ -73,10 +73,13 @@ export default {
         });
 
         this.$root.socket.on('connection end', () => {
-            this.$store.commit('conversations/ADD', {
-                room: app.room,
-                stranger: app.stranger
-            });
+            var conversation = {
+                room: this.app.room,
+                stranger: this.app.stranger
+            };
+
+
+            this.$store.commit('conversations/ADD', conversation);
 
             this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),

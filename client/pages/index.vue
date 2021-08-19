@@ -2,7 +2,8 @@
   <v-container>
     <v-row align="center" justify="center" class="mt-2">
       <v-col xl="6" lg="8" md="10" sm="12">
-        <Overlay/>
+        <Conversations v-if="conversations.overlay"/>
+        <Overlay v-if="app.overlay"/>
         <Chat v-if="app.user"/>
       </v-col>
     </v-row>
@@ -10,7 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   head() {
@@ -44,11 +45,13 @@ export default {
   },
   components: {
     Chat: () => import("~/components/Chat"),
-    Overlay: () => import("~/components/Overlay")
+    Overlay: () => import("~/components/Overlay"),
+    Conversations: () => import("~/components/Conversations"),
   },
   computed: {
     ...mapState(["app"]),
     ...mapState(["page"]),
+    ...mapState(["conversations"])
   },
 }
 </script>

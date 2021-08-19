@@ -81,12 +81,15 @@ export default {
             
             if(!res) return;
 
-            this.$store.commit('conversations/ADD', {
-                room: app.room,
-                stranger: app.stranger
-            });
+            var conversation = {
+                room: this.app.room,
+                stranger: this.app.stranger
+            };
+
+            this.$store.commit('conversations/ADD', conversation);
 
             this.$root.socket.emit("leave");
+
             this.$store.commit('app/SET_STRANGER', null);
             this.$store.commit('app/SET_ROOM', null);
 

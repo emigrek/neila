@@ -1,5 +1,6 @@
 export const state = () => ({
-    all: []
+    all: [],
+    overlay: false
 })
 
 export const mutations = {
@@ -7,8 +8,14 @@ export const mutations = {
         state.all.push(payload);
         localStorage.setItem('conversations', JSON.stringify(state.all));
     },
+    SET_OVERLAY(state, overlay) {
+        state.overlay = overlay;
+    },
     INITIALIZE(state) {
-        const conversations = JSON.parse(localStorage.getItem('conversations'));
-        state.all = conversations || [];
+        var conversations = JSON.parse(localStorage.getItem('conversations'));
+
+        if(conversations == null) conversations = [];
+
+        state.all = conversations.reverse();
     }
 }

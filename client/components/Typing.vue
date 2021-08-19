@@ -4,13 +4,6 @@
         marginTop: `${(lastFromStranger) ? '0px': '0.8rem'}`
     }">
         <div class="d-flex align-center">
-            <v-avatar
-                color="grey darken-4"
-                size="32"
-                class="mr-3"
-            >
-                {{app.stranger.emoji}}
-            </v-avatar>
             <v-skeleton-loader class="me-1" width="6px" height="6px" type="text"/>
             <v-skeleton-loader class="me-1" width="6px" height="6px" type="text"/>
             <v-skeleton-loader width="6px" height="6px" type="text"/>

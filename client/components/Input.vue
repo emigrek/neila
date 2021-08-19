@@ -11,17 +11,16 @@
                 color="light-blue lighten-1"
                 @keyup="type"
                 no-details
-                class="elevation-3"
+                class="elevation-1"
                 hide-details
             ></v-text-field>
             <v-btn
-                class="ms-3 black--text"
+                class="ms-3 black--text elevation-1"
                 color="alien"
                 rounded
                 @click="send"
                 :disabled="!message.length || !app.room"
                 large
-                elevation="6"
                 pill
             >
                 Wyślij 📡
