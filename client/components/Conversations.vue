@@ -9,21 +9,75 @@
     >
         <div class="text-center">
             <p class="display-1 font-weight-bold">Odkryci ✨</p>
-            <p class="subtitle-1">Przeprowadzone konwersacje</p>
-        </div>
-        <div id="conversations" v-if="conversations.all.length" class="my-2" style="overflow-y: scroll;margin-top: auto; width: 100%;height: 500px;max-height: 500px;">
-            <div style="display: flex;flex-flow: column nowrap;padding-top: 10px;">
-                <div v-for="conversation in conversations.all" :key="conversation.room.id">
-                    <Stranger :emoji="conversation.stranger.emoji" :motto="conversation.stranger.motto" :region="conversation.stranger.region"/>
-                </div>
-            </div>
-        </div>
-        <div v-else class="my-5 grey--text text--darken-2">
-            <p class="subtitle-1">Wyszukaj pierwszego obcego! 🧐</p>
+            <p class="subtitle-1">Ostatnie rozmowy</p>
         </div>
         <v-row align="center" justify="center">
             <v-col cols="12" class="text-center">
-                <v-btn depressed x-large rounded no-details @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
+                <v-btn @click="clear" color="black" depressed>
+                    Wyczyść 🗑
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-row class="my-4" align="center" justify="center">
+            <v-col lg="12" md="12" sm="12" cols="10">
+                <div class="d-flex flex-column align-center justify-center elevation-5">
+                    <v-banner min-width="400" class="grey darken-4" :value="selected && selected.length > 0" dark>
+                        <div class="d-flex align-center">
+                            <span class="grey--text caption">Zaznaczono {{selected ? selected.length : 0}}</span>
+                            <v-btn
+                                class="ms-auto"
+                                text
+                                color="alien"
+                                @click="removeSelected"
+                            >
+                                Usuń wybrane
+                            </v-btn>
+                        </div>
+                    </v-banner>
+                    <v-list min-width="400" v-if="conversations.all.length" class="overflow-y-auto" two-line style="max-height: 400px;">
+                        <v-list-item-group
+                            v-model="selected"
+                            active-class="alien--text"
+                            multiple
+                        >
+                            <template v-for="(item) in conversations.all">
+                                <v-list-item :key="item.room.id">
+                                    <template>
+                                        <v-list-item-avatar>
+                                            <v-avatar
+                                                class="display-1"
+                                                size="64"
+                                            >
+                                                {{ item.stranger.emoji }}
+                                            </v-avatar> 
+                                        </v-list-item-avatar>
+                                        
+                                        <v-list-item-content>
+                                            <v-list-item-title v-text="item.stranger.motto"></v-list-item-title>
+
+                                            <v-list-item-subtitle
+                                                class="text--grey"
+                                                v-text="item.stranger.region"
+                                            ></v-list-item-subtitle>
+                                        </v-list-item-content>
+
+                                        <v-list-item-action>
+                                            <v-list-item-action-text v-text="formatDate(item.room.created)"></v-list-item-action-text>
+                                        </v-list-item-action>
+                                    </template>
+                                </v-list-item>
+                            </template>
+                        </v-list-item-group>
+                    </v-list>
+                    <div class="grey--text text--darken-3 my-5" v-else>
+                        Wyszukaj pierwszego obcego 😢
+                    </div>
+                </div>
+            </v-col>
+        </v-row>
+        <v-row align="center" justify="center">
+            <v-col cols="12" class="text-center">
+                <v-btn x-large rounded no-details @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
                     Zamknij
                 </v-btn>
             </v-col>
@@ -32,10 +86,39 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapState, mapMutations } from "vuex";
 
 export default {
     name: 'Conversations',
+    data() {
+        return {
+            selected: []
+        };
+    },
+    methods: {
+        formatDate(created) {
+            return moment(created).format("HH:mm:ss DD-MM-YYYY");
+        },
+        async clear() {
+            const res = await this.$dialog.confirm({
+                text: 'Na pewno chcesz usunąć wszystkich obcych?',
+                title: 'Stój! 😧',
+                actions: {
+                    false: "Nie",
+                    true: "Tak, usuwam"
+                }
+            })
+            
+            if(!res) return;
+
+            this.$store.commit("conversations/CLEAR");
+        },
+        removeSelected() {
+            this.$store.commit("conversations/REMOVE", this.selected);
+            this.selected = [];
+        }
+    },
     components: {
         Stranger: () => import("~/components/Stranger")
     },

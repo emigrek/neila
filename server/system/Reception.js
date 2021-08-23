@@ -24,8 +24,8 @@ class Reception {
 
         this.rooms.push(room);
 
-        stranger.socket.emit("connection established", { name: room.name, user: user.data });
-        user.socket.emit("connection established", { name: room.name, user: stranger.data });
+        stranger.socket.emit("connection established", { name: room.name, created: room.created, user: user.data });
+        user.socket.emit("connection established", { name: room.name, created: room.created, user: stranger.data });
     }
 
     findStranger(user) {

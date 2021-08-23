@@ -5,7 +5,7 @@
         <div class="ml-auto">
             <v-btn text color="black" depressed @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
                 <v-icon class="emoji-icon">
-                    💬
+                    ✨
                 </v-icon>
             </v-btn>
             <v-btn text color="black" depressed @click="$store.commit('app/SET_OVERLAY', !app.overlay)">

@@ -2,7 +2,7 @@
     <v-sheet class="inputs pa-3 rounded-lg" elevation="12">
         <div class="d-flex justify-center align-center">
             <v-text-field
-                v-model="message"
+                v-model.trim="message"
                 placeholder="Napisz coś..."
                 filled
                 rounded

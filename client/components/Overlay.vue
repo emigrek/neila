@@ -12,7 +12,7 @@
             <p class="subtitle-1">Zdradź coś o sobię...</p>
         </div>
         <v-row align="center" justify="center">
-            <v-col xl="5" md="5" cols="4">
+            <v-col xl="5" md="5">
                 <v-slide-group
                     v-model="emoji"
                     class="pa-4"
@@ -25,8 +25,8 @@
                     <v-slide-item :value="emoji" v-for="emoji in emojis" :key="emoji" v-slot="{ active, toggle }">
                         <v-card
                             :color="active ? undefined : 'alien'"
-                            class="ma-1 px-1 py-2 display-2 rounded-circle"
                             @click="toggle"
+                            class="ma-1 px-1 py-2 display-2 rounded-circle"
                         >
                             {{emoji}}
                         </v-card>
@@ -71,11 +71,9 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-divider class="my-5" inset light/>
-        <div class="text-center grey--text text--darken-2">
+        <div class="text-center grey--text text--darken-2 mt-5">
             <p class="caption">
-                Klikając przycisk potwierdzasz że posiadasz 18 lat, lub 13 za zgodą rodzica.<br/>
-                Po wyjściu ze strony, wszystkie twoje informacje zostają usunięte.
+                Klikając przycisk potwierdzasz że posiadasz 18 lat, lub 13 za zgodą rodzica.
             </p>
         </div>
     </v-overlay>
@@ -88,10 +86,7 @@ export default {
     name: 'Overlay',
     data() {
         return {
-            motto: '',
             mottoRules: [v => (v || '').length < 50 || 'Maksymalnie 50 znaków'],
-            region: 'Polska',
-            emoji: '👦',
             emojis: [
                 '👦', '🧑', '👱', '👨', '🧔',
                 '👨‍🦰', '👨‍🦱', '👨‍🦳',
@@ -109,20 +104,46 @@ export default {
     },
     methods: {
         apply() {
-            if(this.motto.length >= 50) return;
-            if(!this.regions.includes(this.region)) return;
-
-            var user = {
-                motto: this.motto,
-                region: this.region,
-                emoji: this.emoji
-            };
-
-            this.$store.commit("app/SET_USER", user);
             this.$store.commit("app/SET_OVERLAY", false);
         }
     },
     computed: {
+        emoji: {
+            get () {
+                return this.app.user.emoji;
+            },
+            set (val) {
+                this.$store.commit("app/SET_USER", {
+                    emoji: val,
+                    motto: this.motto,
+                    region: this.region
+                });
+            }
+        },
+        motto: {
+            get () {
+                return this.app.user.motto;
+            },
+            set (val) {
+                this.$store.commit("app/SET_USER", {
+                    emoji: this.emoji,
+                    motto: val,
+                    region: this.region
+                });
+            }
+        },
+        region: {
+            get () {
+                return this.app.user.region;
+            },
+            set (val) {
+                this.$store.commit("app/SET_USER", {
+                    emoji: this.emoji,
+                    motto: this.motto,
+                    region: val
+                });
+            }
+        },
         ...mapState(["app"]),
     },
 }

@@ -1,5 +1,9 @@
 export const state = () => ({
-    user: null,
+    user: {
+        emoji: '👦',
+        motto: '',
+        region: 'Polska'
+    },
     stranger: null,
     room: null,
     searching: false,
