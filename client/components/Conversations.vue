@@ -13,7 +13,7 @@
         </div>
         <v-row align="center" justify="center">
             <v-col cols="12" class="text-center">
-                <v-btn @click="clear" color="black" depressed>
+                <v-btn @click="clear" color="black" depressed :disabled="!conversations.all.length">
                     Wyczyść 🗑
                 </v-btn>
             </v-col>
@@ -69,7 +69,7 @@
                             </template>
                         </v-list-item-group>
                     </v-list>
-                    <div class="grey--text text--darken-3 my-5" v-else>
+                    <div class="grey--text pa-4 grey darken-4" v-else>
                         Wyszukaj pierwszego obcego 😢
                     </div>
                 </div>
@@ -98,7 +98,7 @@ export default {
     },
     methods: {
         formatDate(created) {
-            return moment(created).format("HH:mm:ss DD-MM-YYYY");
+            return moment(created).fromNow();
         },
         async clear() {
             const res = await this.$dialog.confirm({
