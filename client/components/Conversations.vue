@@ -69,7 +69,7 @@
                             </template>
                         </v-list-item-group>
                     </v-list>
-                    <div class="grey--text pa-4 grey darken-4" v-else>
+                    <div class="grey--text pa-4 grey darken-4 text-center" style="min-width: 400px;" v-else>
                         Wyszukaj pierwszego obcego 😢
                     </div>
                 </div>

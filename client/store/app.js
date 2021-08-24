@@ -24,6 +24,7 @@ export const mutations = {
     },
     SET_USER(state, user) {
         state.user = user;
+        localStorage.setItem('user', JSON.stringify(state.user));
     },
     SET_STRANGER(state, stranger) {
         state.stranger = stranger;
@@ -36,5 +37,16 @@ export const mutations = {
     },
     CLEAR_MESSAGES(state) {
         state.messages = [];
+    },
+    INITIALIZE(state) {
+        var user = JSON.parse(localStorage.getItem('user'));
+
+        if(user == null) user = {
+            emoji: '👦',
+            motto: '',
+            region: 'Polska'
+        };
+
+        state.user = user;
     }
 };

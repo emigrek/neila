@@ -2,8 +2,9 @@
   <v-container>
     <v-row align="center" justify="center" class="mt-2">
       <v-col xl="6" lg="8" md="10" sm="12">
-        <Conversations v-if="conversations.overlay"/>
-        <Overlay v-if="app.overlay"/>
+        <Splash/>
+        <Conversations/>
+        <Overlay/>
         <Chat v-if="app.user"/>
       </v-col>
     </v-row>
@@ -47,6 +48,7 @@ export default {
     Chat: () => import("~/components/Chat"),
     Overlay: () => import("~/components/Overlay"),
     Conversations: () => import("~/components/Conversations"),
+    Splash: () => import("~/components/Splash")
   },
   computed: {
     ...mapState(["app"]),
