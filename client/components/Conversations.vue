@@ -8,8 +8,7 @@
         class="black--text"
     >
         <div class="text-center">
-            <p class="display-1 font-weight-bold">Odkryci ✨</p>
-            <p class="subtitle-1">Ostatnie rozmowy</p>
+            <p class="display-1 font-weight-bold">Odkryci 🔭</p>
         </div>
         <v-row align="center" justify="center">
             <v-col cols="12" class="text-center">
@@ -18,7 +17,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-row class="my-4" align="center" justify="center">
+        <v-row class="my-5" align="center" justify="center">
             <v-col lg="12" md="12" sm="12" cols="10">
                 <div class="d-flex flex-column align-center justify-center elevation-5">
                     <v-banner min-width="400" class="grey darken-4" :value="selected && selected.length > 0" dark>
@@ -82,6 +81,11 @@
                 </v-btn>
             </v-col>
         </v-row>
+        <div class="text-center grey--text text--darken-2 mt-5">
+            <p class="caption">
+                Obcy zostaje zapisany gdy rozmowa przekroczy 50 wiadomości. 🤫
+            </p>
+        </div>
     </v-overlay>
 </template>
 
@@ -113,9 +117,11 @@ export default {
             if(!res) return;
 
             this.$store.commit("conversations/CLEAR");
+            this.$toast('Usunięto wszystkich poprzednich obcych 😎');
         },
         removeSelected() {
             this.$store.commit("conversations/REMOVE", this.selected);
+            this.$toast('Usunięto wybranych obcych 😎');
             this.selected = [];
         }
     },

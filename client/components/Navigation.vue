@@ -85,8 +85,9 @@ export default {
                 room: this.app.room,
                 stranger: this.app.stranger
             };
-
-            this.$store.commit('conversations/ADD', conversation);
+            
+            if(this.app.messages.length >= 50)
+                this.$store.commit('conversations/ADD', conversation);
 
             this.$root.socket.emit("leave");
 

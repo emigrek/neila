@@ -78,8 +78,8 @@ export default {
                 stranger: this.app.stranger
             };
 
-
-            this.$store.commit('conversations/ADD', conversation);
+            if(this.app.messages.length >= 50)
+                this.$store.commit('conversations/ADD', conversation);
 
             this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
