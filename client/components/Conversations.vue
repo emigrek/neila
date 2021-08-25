@@ -26,7 +26,7 @@
                             <v-btn
                                 class="ms-auto"
                                 text
-                                color="alien"
+                                color="red"
                                 @click="removeSelected"
                             >
                                 Usuń wybrane
@@ -41,7 +41,7 @@
                         >
                             <template v-for="(item) in conversations.all">
                                 <v-list-item :key="item.room.id">
-                                    <template>
+                                    <template v-slot:default="{ active }">
                                         <v-list-item-avatar>
                                             <v-avatar
                                                 class="display-1"
@@ -61,6 +61,15 @@
                                         </v-list-item-content>
 
                                         <v-list-item-action>
+                                            <v-list-item-action-text v-if="active && selected.length < 2">
+                                                <v-btn @click="
+                                                    selected = [];
+                                                    $store.commit('app/SET_MESSAGES', item.messages);
+                                                    $store.commit('app/SET_STRANGER', item.stranger);
+                                                    $store.commit('conversations/SET_OVERLAY', !conversations.overlay);
+                                                    $toast('Wiadomości zostały przeniesione!');
+                                                " small text depressed>Pokaż 👀</v-btn>
+                                            </v-list-item-action-text>
                                             <v-list-item-action-text v-text="formatDate(item.room.created)"></v-list-item-action-text>
                                         </v-list-item-action>
                                     </template>
@@ -76,7 +85,7 @@
         </v-row>
         <v-row align="center" justify="center">
             <v-col cols="12" class="text-center">
-                <v-btn x-large rounded no-details @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
+                <v-btn x-large rounded no-details @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay);">
                     Zamknij
                 </v-btn>
             </v-col>

@@ -1,10 +1,10 @@
 <template>
     <div class="d-flex justify-center mb-2">
         <div class="d-flex justify-center align-center">
-            <div class="d-flex justify-center grey darken-4 align-center pa-3 rounded-lg">
+            <div class="d-flex justify-center align-center pa-3 rounded-lg">
                 <div class="mb-1 mx-2">
                     <v-avatar
-                        class="display-1 elevation-1"
+                        class="display-1 elevation-1 grey darken-4"
                         size="64"
                     >
                     

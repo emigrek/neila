@@ -59,6 +59,6 @@ export default {
 }
 .message:hover {
     background: rgb(66,66,66);
-    background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%); 
+    background: linear-gradient(90deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 100%); 
 }
 </style>

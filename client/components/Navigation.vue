@@ -34,10 +34,10 @@
             depressed
             small
             text
-            color="alien"
+            color="info"
             @click="$store.commit('page/SET_HEADER', !page.header)"
         >
-            📱
+            Tryb mobilny 📱
         </v-btn>
     </v-sheet>
 </template>
@@ -81,24 +81,24 @@ export default {
             
             if(!res) return;
 
-            var conversation = {
-                room: this.app.room,
-                stranger: this.app.stranger
-            };
-            
-            if(this.app.messages.length >= 50)
-                this.$store.commit('conversations/ADD', conversation);
-
-            this.$root.socket.emit("leave");
-
-            this.$store.commit('app/SET_STRANGER', null);
-            this.$store.commit('app/SET_ROOM', null);
-
             this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: "Rozłączyłeś się. 🤫"
             });
+
+            if(this.app.messages.length >= 50)
+                this.$store.commit('conversations/ADD', {
+                    room: this.app.room,
+                    stranger: this.app.stranger,
+                    messages: this.app.messages
+                });
+            
+
+            this.$root.socket.emit("leave");
+
+            this.$store.commit('app/SET_STRANGER', null);
+            this.$store.commit('app/SET_ROOM', null);
         }
     },
     mounted() {

@@ -61,6 +61,13 @@ export default {
             this.message = '';
 
             this.type();
+
+            if(this.app.messages.length == 50) 
+                this.$store.commit('app/ADD_MESSAGE', {
+                    id: nanoid(),
+                    created: moment().format(),
+                    content: `Jest to wasza 50 wiadomość, będziecie mogli wrócić do tej rozmowy później!`
+                });
         },
         async type() {
             if(this.app.room) {

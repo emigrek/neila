@@ -3,17 +3,17 @@
         <div class="title black--text font-weight-bold">nelia 👽</div>
         <div class="caption red--text text--darken-2 ms-1">• <span class="font-weight-bold">{{active}}</span> online</div>
         <div class="ml-auto">
-            <v-btn text color="black" depressed @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
+            <v-btn v-if="!app.room && !app.searching" text color="black" @click="$store.commit('conversations/SET_OVERLAY', !conversations.overlay)">
                 <v-icon class="emoji-icon">
                     🔭
                 </v-icon>
             </v-btn>
-            <v-btn text color="black" depressed @click="$store.commit('app/SET_OVERLAY', !app.overlay)">
+            <v-btn text color="black" @click="$store.commit('app/SET_OVERLAY', !app.overlay)">
                 <v-icon class="emoji-icon">
                     {{app.user.emoji}}
                 </v-icon>
             </v-btn>
-            <v-btn text color="black" depressed @click="
+            <v-btn text color="black" @click="
                 $store.commit('sound/SET', !sound.enabled);
                 $toast(sound.enabled ? 'Dźwięki włączone 🔊' : 'Dźwięki wyłączone 🔈');
             ">

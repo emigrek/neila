@@ -12,7 +12,7 @@
                                 {{ item.content }}
                             </div>
                         </div>
-                        <Message v-else :last="app.messages[index-1]" :content="item.content" :author="item.author" :me="item.author == $root.socket.id" :created="item.created"/>
+                        <Message v-else :last="app.messages[index-1]" :content="item.content" :author="item.author" :me="!item.stranger" :created="item.created"/>
                     </div>
                 </transition-group>
                 <transition name="slide-fade">
@@ -73,19 +73,18 @@ export default {
         });
 
         this.$root.socket.on('connection end', () => {
-            var conversation = {
-                room: this.app.room,
-                stranger: this.app.stranger
-            };
-
-            if(this.app.messages.length >= 50)
-                this.$store.commit('conversations/ADD', conversation);
-
             this.$store.commit('app/ADD_MESSAGE', {
                 id: nanoid(),
                 created: moment().format(),
                 content: `Utracono połączenie. 😥`
             });
+
+            if(this.app.messages.length >= 50)
+                this.$store.commit('conversations/ADD', {
+                    room: this.app.room,
+                    stranger: this.app.stranger,
+                    messages: this.app.messages
+                });
 
             this.$store.commit('app/SET_ROOM', null);
             this.$store.commit('app/SET_STRANGER', null);
@@ -101,7 +100,14 @@ export default {
                     this.audio.notification.play();
                 }
             }
-            this.$store.commit('app/ADD_MESSAGE', data);
+            this.$store.commit('app/ADD_MESSAGE', {...data, stranger: true});
+
+            if(this.app.messages.length == 50) 
+                this.$store.commit('app/ADD_MESSAGE', {
+                    id: nanoid(),
+                    created: moment().format(),
+                    content: `Jest to wasza 50 wiadomość, będziecie mogli wrócić do tej rozmowy później!`
+                });
         });
 
         this.$root.socket.on('typing', ({ typing }) => {

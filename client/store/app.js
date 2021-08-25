@@ -13,6 +13,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+    SET_MESSAGES(state, payload) {
+        state.messages = payload;
+    },
     ADD_MESSAGE(state, payload) {
         state.messages.push(payload);
     },
