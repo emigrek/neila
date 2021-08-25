@@ -14,7 +14,7 @@
             depressed
             small
             text
-            color="alien"
+            color="red"
             v-if="app.searching == true"
             @click="stopSearching"
         >

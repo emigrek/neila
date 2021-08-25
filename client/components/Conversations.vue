@@ -44,7 +44,7 @@
                                     <template v-slot:default="{ active }">
                                         <v-list-item-avatar>
                                             <v-avatar
-                                                class="display-1"
+                                                class="display-1 elevation-1 grey darken-4"
                                                 size="64"
                                             >
                                                 {{ item.stranger.emoji }}
@@ -67,7 +67,7 @@
                                                     $store.commit('app/SET_MESSAGES', item.messages);
                                                     $store.commit('app/SET_STRANGER', item.stranger);
                                                     $store.commit('conversations/SET_OVERLAY', !conversations.overlay);
-                                                    $toast('Wiadomości zostały przeniesione!');
+                                                    $toast('Wiadomości zostały przeniesione! 👊');
                                                 " small text depressed>Pokaż 👀</v-btn>
                                             </v-list-item-action-text>
                                             <v-list-item-action-text v-text="formatDate(item.room.created)"></v-list-item-action-text>

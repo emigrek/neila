@@ -5,7 +5,7 @@
         <Splash/>
         <Conversations/>
         <Overlay/>
-        <Chat v-if="app.user"/>
+        <Chat/>
       </v-col>
     </v-row>
   </v-container>

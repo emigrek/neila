@@ -39,13 +39,20 @@ export default {
     transition: 'fade',
     data() {
         return {
-            input: ''
+            input: '',
+            cooldown: false
         };
     },
     methods: {
         async send() {
+            if(this.cooldown) return;
             if(this.app.room == null) return;
             if(!this.message.length || !this.message) return;
+
+            this.cooldown = true;
+            setTimeout(() => {
+                this.cooldown = false;
+            }, 1000);
 
             var data = {
                 id: nanoid(),
@@ -55,19 +62,18 @@ export default {
             };
 
             this.$root.socket.emit('message', data);
-
             this.$store.commit('app/ADD_MESSAGE', data);
 
             this.message = '';
-
             this.type();
 
-            if(this.app.messages.length == 50) 
+            if(this.app.messages.length == 50) {
                 this.$store.commit('app/ADD_MESSAGE', {
                     id: nanoid(),
                     created: moment().format(),
                     content: `Jest to wasza 50 wiadomość, będziecie mogli wrócić do tej rozmowy później!`
                 });
+            }
         },
         async type() {
             if(this.app.room) {
