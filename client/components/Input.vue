@@ -81,8 +81,6 @@ export default {
             }
         }
     },
-    mounted() {
-    },
     computed: {
         message: {
             set(val) {

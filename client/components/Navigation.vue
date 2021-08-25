@@ -26,6 +26,7 @@
             text
             color="alien"
             v-if="app.room == null && app.searching == false"
+            :disabled="cooldown"
             @click="search"
         >
             Szukaj 🕵️‍♂️
@@ -49,8 +50,15 @@ import { nanoid } from "nanoid";
 
 export default {
     name: "Navigation",
+    data() {
+        return {
+            cooldown: false
+        }
+    },
     methods: {
         async search() {
+            if(this.cooldown) return this.$toast("Odczekaj chwilę przed następną rozmową. 🤐");
+
             this.$store.commit('app/SET_STRANGER', null);
             this.$store.commit('app/CLEAR_MESSAGES');
             this.$store.commit('app/ADD_MESSAGE', {
@@ -61,6 +69,11 @@ export default {
 
             this.$root.socket.emit('queue up', this.app.user);
             this.$store.commit('app/SET_SEARCHING', true);
+
+            this.cooldown = true;
+            setTimeout(() => {
+                this.cooldown = false;
+            }, 5*1000);
         },
         async stopSearching() {
             this.$store.commit('app/SET_STRANGER', null);
@@ -100,8 +113,6 @@ export default {
             this.$store.commit('app/SET_STRANGER', null);
             this.$store.commit('app/SET_ROOM', null);
         }
-    },
-    mounted() {
     },
     computed: {
         ...mapState(["app"]),
