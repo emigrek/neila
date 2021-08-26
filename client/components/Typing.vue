@@ -1,7 +1,12 @@
 <template>
+  <div>
+    <span class="author overline" v-if="!lastFromStranger" style="color: rgb(121, 219, 117);" :style="{  
+        marginTop: `${(lastFromStranger) ? '0px': '0.8rem'}`
+    }">
+      Obcy
+    </span>
     <v-sheet class="message px-4 py-4 grey--text text--lighten-4" :style="{ 
         borderLeft: `2px solid rgb(121, 219, 117)`,
-        marginTop: `${(lastFromStranger) ? '0px': '0.8rem'}`
     }">
         <div class="d-flex align-center">
             <v-skeleton-loader class="type me-1" width="6px" height="6px" type="text"/>
@@ -9,6 +14,7 @@
             <v-skeleton-loader class="type" width="6px" height="6px" type="text"/>
         </div>
     </v-sheet>
+  </div>
 </template>
 
 <script>

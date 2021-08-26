@@ -23,7 +23,7 @@
                 large
                 pill
             >
-                Wyślij 📡
+                Wyślij
             </v-btn>
         </div>
     </v-sheet>
