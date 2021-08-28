@@ -1,8 +1,7 @@
 <template>
-    <v-sheet color="black" class="navigation d-flex justify-center align-center py-1 my-2 rounded-lg" elevation="18">
+    <v-sheet color="black" class="navigation d-flex justify-center align-center py-1 mb-3" elevation="18" rounded>
         <v-btn
             depressed
-            small
             text
             color="error"
             v-if="app.room !== null"
@@ -12,7 +11,6 @@
         </v-btn>
         <v-btn
             depressed
-            small
             text
             color="red"
             v-if="app.searching == true"
@@ -22,7 +20,6 @@
         </v-btn>
         <v-btn
             depressed
-            small
             text
             color="alien"
             v-if="app.room == null && app.searching == false"
@@ -33,7 +30,6 @@
         </v-btn>
         <v-btn
             depressed
-            small
             text
             color="info"
             @click="$store.commit('page/SET_HEADER', !page.header)"

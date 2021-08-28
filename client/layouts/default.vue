@@ -14,6 +14,9 @@ export default {
 :root {
   color-scheme: dark;
 }
+body {
+  overflow-y: auto;
+}
 html { 
   overflow-y: auto;
   scroll-behavior: smooth; 

@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="inputs pa-3 rounded-lg" elevation="12">
+    <v-sheet class="inputs pa-3 rounded" elevation="12">
         <div class="d-flex justify-center align-center">
             <v-text-field
                 v-model.trim="message"

@@ -1,5 +1,5 @@
 <template>
-    <v-sheet class="box pa-4 rounded-lg mb-3" elevation="12">
+    <v-sheet class="box pa-4 rounded mb-3" elevation="12">
         <v-scale-transition leave-absolute>
             <Stranger v-if="app.stranger" :emoji="app.stranger.emoji" :motto="app.stranger.motto" :region="app.stranger.region"/>
         </v-scale-transition>
