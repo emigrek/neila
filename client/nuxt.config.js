@@ -2,6 +2,9 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  target: 'server',
+
+
   head: {
     title: 'nelia - oni tu są',
     htmlAttrs: {
@@ -60,10 +63,14 @@ export default {
 
   io: {
     sockets: [{
-      url: 'http://localhost:8000',
+      url: 'http://localhost:3001',
       autoConnect: false
     }]
   },
+
+  serverMiddleware: [
+    { path: '/ws', handler: '~/api/index.js' },
+  ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {

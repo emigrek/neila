@@ -1,7 +1,6 @@
 require('dotenv').config()
 const app = require('express')()
-const http = require('http').createServer(app)
-const io = require('socket.io')(http, {
+const io = require('socket.io')(process.env.SOCKET_PORT, {
     cors: {
       origin: '*',
     }
@@ -60,6 +59,4 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(process.env.SOCKET_PORT, () => {
-    console.log(`Listening to ${process.env.SOCKET_PORT}`);
-})
+module.exports = app;

@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "description": "talk with aliens 👽",
   "scripts": {
-    "build": "concurrently \"yarn --cwd ./client/ generate && yarn --cwd ./client/ start\" \"yarn --cwd ./server/ start\"",
+    "build": "yarn --cwd ./client/ build",
     "install": "yarn --cwd ./client/",
-    "dev": "concurrently \"yarn --cwd ./client/ dev\" \"--exec yarn --cwd ./server/ start\""
+    "dev": "yarn --cwd ./client/ dev",
+    "start": "yarn --cwd ./client/ start"
   },
   "repository": "https://github.com/emigrek/nelia",
   "author": "Emigrek <kaioshinbox@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "concurrently": "^6.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.12"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
