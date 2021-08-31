@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "talk with aliens 👽",
   "scripts": {
-    "build": "yarn --cwd ./client/ build",
-    "install": "yarn --cwd ./client/",
-    "dev": "yarn --cwd ./client/ dev",
-    "start": "yarn --cwd ./client/ start"
+    "build": "yarn --cwd ./src/ build",
+    "install": "yarn --cwd ./src/",
+    "dev": "yarn --cwd ./src/ dev",
+    "start": "yarn --cwd ./src/ start"
   },
   "repository": "https://github.com/emigrek/nelia",
   "author": "Emigrek <kaioshinbox@gmail.com>",
