@@ -52,7 +52,7 @@ export default {
             this.cooldown = true;
             setTimeout(() => {
                 this.cooldown = false;
-            }, 1000);
+            }, 500);
 
             var data = {
                 id: nanoid(),
