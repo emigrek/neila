@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "talk with aliens 👽",
   "scripts": {
-    "build": "yarn --cwd ./client/ build",
+    "build": "yarn --cwd ./client/ generate",
     "install": "yarn --cwd ./client/",
     "dev": "yarn --cwd ./client/ dev",
     "start": "yarn --cwd ./client/ start"
