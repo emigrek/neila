@@ -4,7 +4,7 @@
   "description": "talk with aliens 👽",
   "scripts": {
     "build": "yarn --cwd ./src/ build",
-    "install": "yarn --cwd ./src/",
+    "generate": "yarn --cwd ./src/ generate",
     "dev": "yarn --cwd ./src/ dev",
     "start": "yarn --cwd ./src/ start"
   },
