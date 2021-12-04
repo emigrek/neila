@@ -62,15 +62,16 @@ export default {
   ],
 
   io: {
+    server: {
+      cors: {
+        origin: 'http://maluch.mikr.us:20153',
+      },
+    },
     sockets: [{
-      url: 'http://localhost:3001',
+      url: 'http://maluch.mikr.us:20153/',
       autoConnect: false
     }]
   },
-
-  serverMiddleware: [
-    { path: '/ws', handler: '~/api/index.js' },
-  ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
