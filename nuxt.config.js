@@ -62,7 +62,7 @@ export default {
   io: {
     server: {
       cors: {
-        origin: 'http://maluch.mikr.us:20153',
+        origin: 'https://maluch.mikr.us:20153',
       },
     },
     sockets: [{
