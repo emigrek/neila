@@ -60,14 +60,9 @@ export default {
   ],
 
   io: {
-    server: {
-      cors: {
-        origin: 'https://maluch.mikr.us:20153',
-      },
-    },
     sockets: [{
-      url: 'http://maluch.mikr.us:20153/',
-      autoConnect: false
+      url: 'http://127.0.0.1:8000',
+      autoConnect: true
     }]
   },
 
